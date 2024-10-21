@@ -1,0 +1,45 @@
+<div class="info-partida-container" fxLayout="column" fxLayoutGap="20px">
+
+  <mat-card class="matCard" fxFlex="40">
+    <mat-card-header>
+      <mat-card-title>{{ match.teamA }} vs {{ match.teamB }}</mat-card-title>
+      <mat-card-subtitle>Placar: {{ match.scoreA }} - {{ match.scoreB }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Data:</strong> {{ match.date }} | <strong>Hora:</strong> {{ match.time }}</p>
+      <p><strong>Estádio:</strong> {{ match.stadium }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="espacamento"></div>
+
+  <mat-card class="matCard">
+    <mat-card-header>
+      <mat-card-title>Gols</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let goal of match.goals">
+          {{ goal.player }} - {{ goal.time }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngFor="let team of [match.teamA, match.teamB]" class="matCard">
+    <mat-card-header>
+      <mat-card-title>{{ team }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let player of team === match.teamA ? match.playersA : match.playersB">
+          {{ player.name }}
+          <span *ngIf="player.yellowCard" class="badge yellow-card">(Cartão Amarelo)</span>
+          <span *ngIf="player.redCard" class="badge red-card">(Cartão Vermelho)</span>
+          <span *ngIf="player.substitute" class="badge substitute">(Substituído)</span>
+          <span *ngIf="player.injured" class="badge injured">(Machucado)</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

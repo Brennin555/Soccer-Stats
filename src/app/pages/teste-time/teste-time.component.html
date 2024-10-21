@@ -1,0 +1,16 @@
+<button (click)="verTimes()"> ver times</button>
+<h1>Times</h1>
+
+<div *ngIf="mostrarTimes">
+  <ul>
+    <li *ngFor="let time of times">{{ time.nome }}</li>
+  </ul>
+</div>
+
+  <h2>Adicionar Novo Time</h2>
+  <form (submit)="adicionarTime()">
+    <label for="nome">Nome do Time:</label>
+    <input id="nome" name="nomeTime" required>
+    <button type="submit">Adicionar Time</button>
+  </form>
+  <p *ngIf="mensagem">{{ mensagem }}</p>

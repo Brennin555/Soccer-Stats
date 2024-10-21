@@ -1,1 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root{
+  --corFundo: #01290d;
+  --corCard: #deffde;
+
+
+}
+
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--corFundo);
+}
+
+.espacamento{
+  margin-top: 1rem;
+}
+
+.espacamentoG{
+  margin-top: 20rem;
+}
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.card{
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: var(--corCard);
+}
+
+h2 {
+  text-align: center;
+}
+
+.badge {
+  margin-left: 10px;
+  font-size: 0.9em;
+  font-weight: normal;
+}
+
+mat-card.matCard {
+  background-color: var(--corCard) !important; /* Use !important como último recurso */
+}
+
+mat-card-title {
+  text-align: center;
+}

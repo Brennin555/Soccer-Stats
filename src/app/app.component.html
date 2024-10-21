@@ -1,16 +1,4 @@
-  <button (click)="verTimes()"> ver times</button>
-  <h1>Times</h1>
-
-  <div *ngIf="mostrarTimes">
-    <ul>
-      <li *ngFor="let time of times">{{ time.nome }}</li>
-    </ul>
-  </div>
-
-    <h2>Adicionar Novo Time</h2>
-    <form (submit)="adicionarTime()">
-      <label for="nome">Nome do Time:</label>
-      <input id="nome" [(ngModel)]="nomeTime" name="nomeTime" required>
-      <button type="submit">Adicionar Time</button>
-    </form>
-    <p *ngIf="mensagem">{{ mensagem }}</p>
+<div>
+  <!-- <h1>Meu Aplicativo de Futebol</h1> -->
+  <router-outlet></router-outlet> <!-- O conteúdo das rotas será renderizado aqui -->
+</div>

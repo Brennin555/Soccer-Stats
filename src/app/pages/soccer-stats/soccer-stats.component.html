@@ -1,0 +1,71 @@
+<div class="dashboard-container" fxLayout="row" fxLayoutGap="10px">
+  <div class="card" fxFlex="30">
+    <h2>Últimas Partidas</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let match of matches">
+        {{ match.teamA }} vs {{ match.teamB }} - {{ match.date }}
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="espacamento"></div>
+
+  <div class="card" fxFlex="40">
+    <h2>Times</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let team of teams">
+        {{ team.name }}
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="espacamento"></div>
+
+  <div class="card" fxFlex="30">
+    <h2>Tabela de Classificação</h2>
+    <table mat-table [dataSource]="standings" class="mat-elevation-z8">
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> Posição </th>
+        <td mat-cell *matCellDef="let element"> {{ element.position }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="team">
+        <th mat-header-cell *matHeaderCellDef> Time </th>
+        <td mat-cell *matCellDef="let element"> {{ element.team }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="points">
+        <th mat-header-cell *matHeaderCellDef> Pontos </th>
+        <td mat-cell *matCellDef="let element"> {{ element.points }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="matches">
+        <th mat-header-cell *matHeaderCellDef> Partidas </th>
+        <td mat-cell *matCellDef="let element"> {{ element.partidas }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="v">
+        <th mat-header-cell *matHeaderCellDef> V </th>
+        <td mat-cell *matCellDef="let element"> {{ element.v }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="e">
+        <th mat-header-cell *matHeaderCellDef> E </th>
+        <td mat-cell *matCellDef="let element"> {{ element.e }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="d">
+        <th mat-header-cell *matHeaderCellDef> D </th>
+        <td mat-cell *matCellDef="let element"> {{ element.d }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sg">
+        <th mat-header-cell *matHeaderCellDef> SG </th>
+        <td mat-cell *matCellDef="let element"> {{ element.sg }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
