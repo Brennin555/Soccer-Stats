@@ -36,21 +36,21 @@ export class TesteTimeComponent implements OnInit {
     );
   }
 
-  adicionarTime(): void {
-    if (this.nomeTime.trim()) {
-      this.apiService.addTime(this.nomeTime).subscribe(
-        (response) => {
-          this.mensagem = response.message;
-          this.nomeTime = '';  // Limpa o campo do formulário após adicionar
-          this.carregarTimes();  // Atualiza a lista de times após a adição
-        },
-        (error) => {
-          this.mensagem = 'Erro ao adicionar time';
-          console.error(error);
-        }
-      );
-    }
-  }
+  // adicionarTime(): void {
+  //   if (this.nomeTime.trim()) {
+  //     this.apiService.addTime(this.nomeTime).subscribe(
+  //       (response) => {
+  //         this.mensagem = response.message;
+  //         this.nomeTime = '';  // Limpa o campo do formulário após adicionar
+  //         this.carregarTimes();  // Atualiza a lista de times após a adição
+  //       },
+  //       (error) => {
+  //         this.mensagem = 'Erro ao adicionar time';
+  //         console.error(error);
+  //       }
+  //     );
+  //   }
+  // }
 
   verTimes(): void {
     this.mostrarTimes = !this.mostrarTimes;

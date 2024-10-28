@@ -1,25 +1,9 @@
 import { Component } from '@angular/core';
-
-interface Match {
-  teamA: string;
-  teamB: string;
-  date: string;
-}
-
-interface Team {
-  name: string;
-}
-
-interface Standing {
-  position: number;
-  team: string;
-  points: number;
-  partidas: number;
-  v: number;
-  e: number;
-  d: number;
-  sg: number;
-}
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
+import { Partida } from 'src/app/interfaces/partida';
+import { Time } from 'src/app/interfaces/time';
 
 @Component({
   selector: 'app-soccer-stats',
@@ -28,25 +12,46 @@ interface Standing {
 })
 export class SoccerStatsComponent {
 
-  matches: Match[] = [
-    { teamA: 'Time 1', teamB: 'Time 2', date: '2024-10-21' },
-    { teamA: 'Time 3', teamB: 'Time 4', date: '2024-10-22' },
-  ];
+  constructor(private api: ApiService) { }
 
-  teams: Team[] = [
-    { name: 'Time 1' },
-    { name: 'Time 2' },
-    { name: 'Time 3' },
-    { name: 'Time 4' },
-  ];
+  partidas: Partida[] = [];
+  rodadaEscolhida = '33'
 
-  standings: Standing[] = [
-    { position: 1, team: 'Time 1', points: 10, partidas: 4, v: 3, e: 1, d: 0, sg: 5 },
-    { position: 2, team: 'Time 2', points: 9, partidas: 4, v: 3, e: 0, d: 1, sg: 3 },
-    { position: 3, team: 'Time 3', points: 8, partidas: 4, v: 2, e: 2, d: 0, sg: 2 },
-    { position: 4, team: 'Time 4', points: 7, partidas: 4, v: 2, e: 1, d: 1, sg: 1 },
-  ];
+  times: Time[] = [];
+  timesTabela: Time[] = [];
 
-  displayedColumns: string[] = ['position', 'team', 'points', 'matches', 'v', 'e', 'd', 'sg'];
+  displayedColumns: string[] = ['posicao', 'nome', 'pontos', 'nJogos', 'nVitorias', 'nEmpates', 'nDerrotas', 'nGols'];
+
+  ngOnInit(): void {
+    // this.api.atualizaPartidas();
+    this.atualizaDados();
+  }
+
+  atualizaP(): void {
+    this.api.atualizaPartidas();
+  }
+
+  atualizaDados(): void {
+    this.api.getPartidas().subscribe((data: any) => {
+      this.partidas = data;
+      this.partidas.forEach((partida) => {
+        partida.horario = this.api.tratarHorario(partida.horario);
+        partida.rodada = this.api.filtraRodada(partida.rodada);
+      });
+    });
+
+    this.api.getTimes().subscribe((data: any) => {
+      this.times = data;
+      this.api.quickSortTimes(this.times, 0, this.times.length - 1);
+    });
+  }
+
+  mudaRodada(direcao:number): void {
+      if(direcao < 0){
+        this.rodadaEscolhida = (parseInt(this.rodadaEscolhida) - 1).toString();
+      }else{
+        this.rodadaEscolhida = (parseInt(this.rodadaEscolhida) + 1).toString();
+      }
+    }
 
 }
