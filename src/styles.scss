@@ -129,30 +129,86 @@ table {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-top: 2px solid #ccc; /* Linha separadora */
+  border-top: 2px solid #ccc;
   padding-top: 10px;
 }
 
-.team-stats {
-  width: 45%; /* Cada coluna ocupa 45% do espaço disponível */
-}
-
 .left {
-  text-align: left; /* Alinha os textos à esquerda */
+  text-align: center;
+  margin-right: 10px !important;
+  margin-top: 10px !important;
+  justify-content: center;
 }
 
 .right {
-  text-align: right; /* Alinha os textos à direita */
-}
-
-.separator {
-  width: 10px; /* Largura da linha separadora */
+  text-align: center;
+  margin-left: 10px !important;
+  margin-top: 10px !important;
 }
 
 .estat {
-  margin-bottom: 10px; /* Espaçamento entre as estatísticas */
+  margin-bottom: 10px;
+}
+
+.estat-title {
+  text-align: center;
+  margin: 0;
+}
+
+.estat-values {
+  display: flex;
+  justify-content: center;
+  // diminuir espaço entre os valores
+  margin-top: 5px;
+  margin: 0;
 }
 
 h4 {
-  margin: 5px 0; /* Espaçamento entre os títulos e os valores */
+  margin: 5px 0;
+}
+
+.barraVertical {
+  color: var(--preto);
+  height: 100%;
+  margin-top: 0;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--azulEscuro);
+}
+
+.info-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.p40 {
+  width: 40%;
+}
+.p50 {
+  width: 50%;
+}
+.p60 {
+  width: 60%;
+}
+
+.header, .body {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.col {
+  flex: 1; /* Permite que cada coluna ocupe o mesmo espaço */
+  padding: 8px;
+  border-bottom: 1px solid #ddd; /* Linha entre as entradas */
+}
+
+.header .col {
+  font-weight: bold; /* Destaca o cabeçalho */
+  background-color: #f2f2f2; /* Fundo diferente para o cabeçalho */
 }

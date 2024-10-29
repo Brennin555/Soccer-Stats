@@ -7,6 +7,7 @@ export interface Partida {
     timeB_nome: string;
     juiz: string;
     dia: string;
+    local: string;
     horario: string;
     nCAmarelos: number;
     nCVermelhos: number;
