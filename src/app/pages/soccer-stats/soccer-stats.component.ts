@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { Partida } from 'src/app/interfaces/partida';
 import { Time } from 'src/app/interfaces/time';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-soccer-stats',
@@ -12,7 +13,10 @@ import { Time } from 'src/app/interfaces/time';
 })
 export class SoccerStatsComponent {
 
-  constructor(private api: ApiService) { }
+  constructor(
+    private api: ApiService,
+    private router: Router
+  ) { }
 
   partidas: Partida[] = [];
   rodadaEscolhida = '33'
@@ -22,9 +26,9 @@ export class SoccerStatsComponent {
 
   displayedColumns: string[] = ['posicao', 'nome', 'pontos', 'nJogos', 'nVitorias', 'nEmpates', 'nDerrotas', 'nGols'];
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // this.api.atualizaPartidas();
-    this.atualizaDados();
+    await this.atualizaDados();
   }
 
   atualizaP(): void {
@@ -34,13 +38,21 @@ export class SoccerStatsComponent {
   atualizaDados(): void {
     this.api.getPartidas().subscribe((data: any) => {
       this.partidas = data;
+      if (this.partidas.length === 0) {
+        console.error('A lista de partidas está vazia.');
+        return;
+      }
       this.partidas.forEach((partida) => {
-        partida.horario = this.api.tratarHorario(partida.horario);
+        partida = this.api.tratarHorario(partida);
         partida.rodada = this.api.filtraRodada(partida.rodada);
       });
     });
 
     this.api.getTimes().subscribe((data: any) => {
+      if (this.partidas.length === 0) {
+        console.error('A lista de partidas está vazia.');
+        return;
+      }
       this.times = data;
       this.api.quickSortTimes(this.times, 0, this.times.length - 1);
     });
@@ -54,4 +66,9 @@ export class SoccerStatsComponent {
       }
     }
 
+
+    selecionaPartida(partida:Partida) {
+      console.log('Partida selecionada:', partida);
+      this.router.navigate(['/info-partida', partida.id]);
+    }
 }

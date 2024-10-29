@@ -1,0 +1,40 @@
+export interface Estatisticas {
+
+  idTimeA: number;
+  timeA_nome: string;
+  idTimeB: number;
+  timeB_nome: string;
+  idPartida: number;
+  chutesGolA: number;
+  chutesGolB: number;
+  chutesForaA: number;
+  chutesForaB: number;
+  totalChutesA: number;
+  totalChutesB: number;
+  chutesBloqA: number;
+  chutesBloqB: number;
+  chutesDentroAreaA: number;
+  chutesDentroAreaB: number;
+  chutesForaAreaA: number;
+  chutesForaAreaB: number;
+  faltasA: number;
+  faltasB: number;
+  escanteiosA: number;
+  escanteiosB: number;
+  impedimentosA: number;
+  impedimentosB: number;
+  posseBolaA: number;
+  posseBolaB: number;
+  cAmarelosA: number;
+  cAmarelosB: number;
+  cVermelhosA: number;
+  cVermelhosB: number;
+  defesasGoleiroA: number;
+  defesasGoleiroB: number;
+  totalPassesA: number;
+  totalPassesB: number;
+  passesCertosA: number;
+  passesCertosB: number;
+  porcentPassesA: number;
+  porcentPassesB: number;
+}

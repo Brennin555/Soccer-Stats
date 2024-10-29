@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
+import { Estatisticas } from 'src/app/interfaces/estatisticas';
 
 @Component({
   selector: 'app-info-partida',
@@ -6,36 +8,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./info-partida.component.scss']
 })
 export class InfoPartidaComponent implements OnInit {
-  // Dados da partida
-  match: any = {
-    teamA: 'Time A',
-    teamB: 'Time B',
-    scoreA: 2,
-    scoreB: 1,
-    date: '2024-10-21',
-    time: '18:00',
-    stadium: 'Estádio do Futebol',
-    goals: [
-      { player: 'Jogador A', time: '10\'' },
-      { player: 'Jogador B', time: '20\'' },
-      { player: 'Jogador C', time: '30\'' }
-    ],
-    playersA: [
-      { name: 'Jogador A', yellowCard: false, redCard: false },
-      { name: 'Jogador B', yellowCard: true, redCard: false },
-      { name: 'Jogador C', yellowCard: false, redCard: true },
-      { name: 'Jogador D', yellowCard: true, redCard: false }
-    ],
 
-    playersB: [
-      { name: 'Jogador A', yellowCard: false },
-      { name: 'Jogador B', yellowCard: true },
-      { name: 'Jogador C', yellowCard: false },
-      { name: 'Jogador D', yellowCard: true }
-    ]
-  };
+  estatisticas = {} as Estatisticas;
+  idPartida: string = '';
 
-  constructor() {}
+  constructor(
+    private api: ApiService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.pegarURL();
+  }
+
+  // pegar idPartida que esta na url
+  pegarURL(): void {
+    let url = window.location.href;
+    this.idPartida = url.split('info-partida/')[1];
+    console.log('idPartida:', this.idPartida);
+  }
+
+
+  atualizaDados(): void {
+    this.api.getEstatisticas(this.idPartida).subscribe(
+      (data) => {
+        this.estatisticas = data[0];
+        console.log('Estatísticas:', this.estatisticas);
+      },
+      (error) => {
+        console.error('Erro ao buscar estatísticas:', error);
+      }
+    );
+
+  }
+
 }

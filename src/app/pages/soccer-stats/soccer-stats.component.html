@@ -20,22 +20,20 @@
       <h2>Rodada: {{rodadaEscolhida}}</h2>
       <button (click)="mudaRodada(1)"> > </button>
     </div>
-		<div>
-			<div class="card"
-				fxFlex="30">
-				<div *ngFor="let partida of partidas">
-					<div *ngIf="partida.rodada == rodadaEscolhida" class="partida">
-						<h3>
-							{{ partida.timeA_nome }} {{partida.golsA}} vs {{partida.golsB}} {{ partida.timeB_nome }}
-						</h3>
+		<div class="partidas-container">
+				<div *ngFor="let partida of partidas" class="partidas_group">
+					<div *ngIf="partida.rodada == rodadaEscolhida" class="partida" (click)="selecionaPartida(partida)">
+						<h3>{{ partida.timeA_nome }} x {{ partida.timeB_nome }}</h3>
+						<h3>{{partida.golsA}} x {{partida.golsB}}</h3>
 						<p>
+							{{ partida.dia }}
 							{{ partida.horario }}
 						</p>
 					</div>
           <div class="espacamento"></div>
 				</div>
-			</div>
 		</div>
+  </div>
 
 		<div class="espacamento"></div>
 
@@ -143,5 +141,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
+
 </div>

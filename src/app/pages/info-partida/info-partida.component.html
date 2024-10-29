@@ -1,45 +1,149 @@
-<div class="info-partida-container" fxLayout="column" fxLayoutGap="20px">
+<!-- <button (click)="atualizaP()"
+	mat-raised-button
+	color="primary">
+	Atualiza partidas
+</button> -->
+<button (click)="atualizaDados()"
+	mat-raised-button
+	color="primary">
+	Buscar Dados
+</button>
 
-  <mat-card class="matCard" fxFlex="40">
-    <mat-card-header>
-      <mat-card-title>{{ match.teamA }} vs {{ match.teamB }}</mat-card-title>
-      <mat-card-subtitle>Placar: {{ match.scoreA }} - {{ match.scoreB }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p><strong>Data:</strong> {{ match.date }} | <strong>Hora:</strong> {{ match.time }}</p>
-      <p><strong>Estádio:</strong> {{ match.stadium }}</p>
-    </mat-card-content>
-  </mat-card>
+< class="dashboard-container"
+	fxLayout="row"
+	fxLayoutGap="10px">
 
-  <div class="espacamento"></div>
+	<div class="card"
+		fxFlex="30">
+		<div class="alinhar"></div>
+		<div class="partidas-container"></div>
+	</div>
 
-  <mat-card class="matCard">
-    <mat-card-header>
-      <mat-card-title>Gols</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list>
-        <mat-list-item *ngFor="let goal of match.goals">
-          {{ goal.player }} - {{ goal.time }}
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
+	<div class="espacamento"></div>
 
-  <mat-card *ngFor="let team of [match.teamA, match.teamB]" class="matCard">
-    <mat-card-header>
-      <mat-card-title>{{ team }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list>
-        <mat-list-item *ngFor="let player of team === match.teamA ? match.playersA : match.playersB">
-          {{ player.name }}
-          <span *ngIf="player.yellowCard" class="badge yellow-card">(Cartão Amarelo)</span>
-          <span *ngIf="player.redCard" class="badge red-card">(Cartão Vermelho)</span>
-          <span *ngIf="player.substitute" class="badge substitute">(Substituído)</span>
-          <span *ngIf="player.injured" class="badge injured">(Machucado)</span>
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
+	<div class="card" fxFlex="30">
+    <h2>Estatísticas:</h2>
+    <div class="estatisticas-container">
+      <div class="team-stats left">
+        <h3>Time A: {{estatisticas.timeA_nome}}</h3>
+        <div class="estat">
+          <h4>Chutes a gol:</h4>
+          <p>{{estatisticas.chutesGolA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Chutes fora:</h4>
+          <p>{{estatisticas.chutesForaA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Chutes bloqueados:</h4>
+          <p>{{estatisticas.chutesBloqA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Chutes dentro da área:</h4>
+          <p>{{estatisticas.chutesDentroAreaA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Faltas:</h4>
+          <p>{{estatisticas.faltasA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Escanteios:</h4>
+          <p>{{estatisticas.escanteiosA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Impedimentos:</h4>
+          <p>{{estatisticas.impedimentosA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Cartões Amarelos:</h4>
+          <p>{{estatisticas.cAmarelosA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Cartões Vermelhos:</h4>
+          <p>{{estatisticas.cVermelhosA || '0'}}</p>
+        </div>
+        <div class="estat">
+          <h4>Defesas do goleiro:</h4>
+          <p>{{estatisticas.defesasGoleiroA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Posse de bola:</h4>
+          <p>{{estatisticas.posseBolaA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Total de passes:</h4>
+          <p>{{estatisticas.totalPassesA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Passes certos:</h4>
+          <p>{{estatisticas.passesCertosA}}</p>
+        </div>
+        <div class="estat">
+          <h4>Porcentagem de passes certos:</h4>
+          <p>{{estatisticas.porcentPassesA}}</p>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="team-stats right">
+        <h3>Time B: {{estatisticas.timeB_nome}}</h3>
+        <div class="estat">
+          <h4>Chutes a gol:</h4>
+          <p>{{estatisticas.chutesGolB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Chutes fora:</h4>
+          <p>{{estatisticas.chutesForaB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Chutes bloqueados:</h4>
+          <p>{{estatisticas.chutesBloqB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Chutes dentro da área:</h4>
+          <p>{{estatisticas.chutesDentroAreaB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Faltas:</h4>
+          <p>{{estatisticas.faltasB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Escanteios:</h4>
+          <p>{{estatisticas.escanteiosB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Impedimentos:</h4>
+          <p>{{estatisticas.impedimentosB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Cartões Amarelos:</h4>
+          <p>{{estatisticas.cAmarelosB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Cartões Vermelhos:</h4>
+          <p>{{estatisticas.cVermelhosB || '0'}}</p>
+        </div>
+        <div class="estat">
+          <h4>Defesas do goleiro:</h4>
+          <p>{{estatisticas.defesasGoleiroB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Posse de bola:</h4>
+          <p>{{estatisticas.posseBolaB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Total de passes:</h4>
+          <p>{{estatisticas.totalPassesB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Passes certos:</h4>
+          <p>{{estatisticas.passesCertosB}}</p>
+        </div>
+        <div class="estat">
+          <h4>Porcentagem de passes certos:</h4>
+          <p>{{estatisticas.porcentPassesB}}</p>
+        </div>
+      </div>
+    </div>
 </div>

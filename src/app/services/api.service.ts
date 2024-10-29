@@ -13,13 +13,20 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  atualizaPartidas(): Observable<any> {
-    return this.http.get<any>(this.apiUrlPartidas).pipe(
-      catchError((error) => {
-        console.error('Erro ao atualizar partidas:', error);
-        return throwError(error);
-      })
-    );
+  atualizaPartidas(){
+    console.log('Atualizando partidas...');
+
+    // abrir link em uma nova janela
+    window.open(this.apiUrlPartidas, '_blank');
+    // return this.http.request('GET', this.apiUrlPartidas);
+
+
+    // return this.http.get<any>(this.apiUrlPartidas).pipe(
+    //   catchError((error) => {
+    //     console.error('Erro ao atualizar partidas:', error);
+    //     return throwError(error);
+    //   })
+    // );
   }
 
   getTimes(): Observable<any> {
@@ -34,9 +41,16 @@ export class ApiService {
     return this.http.get<any>(this.apiUrl + '?jogadores');
   }
 
-  tratarHorario(horario: string): string {
-    const data = new Date(horario);
-    return data.toLocaleDateString() + ' ' + data.toLocaleTimeString();
+  getEstatisticas(idPartida: string): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '?estatisticas=true&idPartida=' + idPartida);
+}
+
+  tratarHorario(partida: Partida) {
+    const data = new Date(partida.horario);
+    partida.dia = data.toLocaleDateString();
+    partida.horario = data.toLocaleTimeString().split(":")[0] + "h" + data.toLocaleTimeString().split(":")[1];
+
+    return partida;
   }
 
   filtraRodada(rodada: string): string {

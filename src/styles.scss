@@ -2,8 +2,10 @@
 
 :root{
   --corFundo: #01290d;
-  --corCard: #deffde;
+  --corCard: #e3dbf7;
   --branco: #fff;
+  --preto: #000;
+  --azulEscuro: #001f3f;
 
 
 }
@@ -32,8 +34,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 10px;
-  background-color: var(--corCard);
-  width: 100%;
+  background-color: var(--branco);
 }
 
 h2 {
@@ -54,19 +55,104 @@ mat-card-title {
   text-align: center;
 }
 
+.partidas-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .partida {
   background-color: var(--branco);
-  width: 40%;
+  width: 340px;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
   padding: 10px;
   border-radius: 8px;
+  border: 3px solid var(--azulEscuro);
+
   margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+
+  h3 {
+    text-align: center;
+  }
+  p {
+    text-align: center;
+  }
+
+  //mudar a cor ao passar o mouse
+  &:hover {
+    background-color: var(--corCard);
+    color: var(--corFundo);
+  }
 }
+
 
 .alinhar {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+
+table {
+  width: 100%; /* Para garantir que a tabela ocupe todo o espaço disponível */
+  border-collapse: collapse; /* Para remover espaçamentos entre as células */
+
+  th, td {
+    padding: 8px; /* Ajuste o padding das células */
+    text-align: left; /* Alinhamento à esquerda */
+    border: 1px solid var(--preto); /* Adiciona uma borda às células */
+  }
+
+  th {
+    background-color: var(--corFundo); /* Usar a cor de fundo definida */
+    color: var(--azulEscuro); /* Usar a cor branca para o texto do cabeçalho */
+    font-weight: bold; /* Deixa o texto do cabeçalho em negrito */
+  }
+
+  td {
+    background-color: var(--corCard); /* Usar a cor do card para as células */
+    color: var(--preto) /* Cor do texto das células */
+  }
+
+  /* Adicionando estilos para o hover nas linhas */
+  tr:hover {
+    background-color: var(--corCard)
+  }
+}
+
+
+.estatisticas-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-top: 2px solid #ccc; /* Linha separadora */
+  padding-top: 10px;
+}
+
+.team-stats {
+  width: 45%; /* Cada coluna ocupa 45% do espaço disponível */
+}
+
+.left {
+  text-align: left; /* Alinha os textos à esquerda */
+}
+
+.right {
+  text-align: right; /* Alinha os textos à direita */
+}
+
+.separator {
+  width: 10px; /* Largura da linha separadora */
+}
+
+.estat {
+  margin-bottom: 10px; /* Espaçamento entre as estatísticas */
+}
+
+h4 {
+  margin: 5px 0; /* Espaçamento entre os títulos e os valores */
 }

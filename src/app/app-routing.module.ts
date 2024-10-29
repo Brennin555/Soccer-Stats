@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'soccer-stats', pathMatch: 'full' }, // Redireciona para soccer-stats
   { path: 'soccer-stats', component: SoccerStatsComponent },
   { path: 'teste-time', component: TesteTimeComponent },
-  { path: 'info-partida', component: InfoPartidaComponent },
+  { path: 'info-partida/:partida', component: InfoPartidaComponent },
 ];
 
 @NgModule({
