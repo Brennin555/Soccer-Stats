@@ -6,6 +6,10 @@
   --branco: #fff;
   --preto: #000;
   --azulEscuro: #001f3f;
+  --vermelhoEscuro: #3f0000;
+
+  --g1: #2b39ff;
+  --g2: #ff4a2b;
 
 
 }
@@ -211,4 +215,40 @@ h4 {
 .header .col {
   font-weight: bold; /* Destaca o cabeçalho */
   background-color: #f2f2f2; /* Fundo diferente para o cabeçalho */
+}
+
+
+.grafico {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column; /* Altere para 'row' para disposição lado a lado */
+  gap: 20px; /* Espaçamento entre os gráficos */
+}
+
+.chart-item {
+  flex: 1; /* Para expandir os gráficos para ocupar o espaço disponível */
+}
+
+.juntaGraficos {
+  display: flex;
+  justify-content: space-between;
+}
+
+.grafico {
+  flex: 1;
+  justify-content: space-between;
+}
+
+.g1{
+  margin-right: -4px;
+}
+
+.g2{
+  margin-left: -4px;
 }

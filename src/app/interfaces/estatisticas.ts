@@ -5,26 +5,26 @@ export interface Estatisticas {
   idTimeB: number;
   timeB_nome: string;
   idPartida: number;
-  chutesGolA: number;
-  chutesGolB: number;
-  chutesForaA: number;
-  chutesForaB: number;
+  chutesGolA: number; //foi
+  chutesGolB: number; //foi
+  chutesForaA: number; //foi
+  chutesForaB: number; //foi
   totalChutesA: number;
   totalChutesB: number;
-  chutesBloqA: number;
-  chutesBloqB: number;
-  chutesDentroAreaA: number;
-  chutesDentroAreaB: number;
-  chutesForaAreaA: number;
-  chutesForaAreaB: number;
+  chutesBloqA: number; //foi
+  chutesBloqB: number; //foi
+  chutesDentroAreaA: number; //foi
+  chutesDentroAreaB: number; //foi
+  chutesForaAreaA: number; //foi
+  chutesForaAreaB: number; //foi
   faltasA: number;
   faltasB: number;
   escanteiosA: number;
   escanteiosB: number;
   impedimentosA: number;
   impedimentosB: number;
-  posseBolaA: number;
-  posseBolaB: number;
+  posseBolaA: string;
+  posseBolaB: string;
   cAmarelosA: number;
   cAmarelosB: number;
   cVermelhosA: number;

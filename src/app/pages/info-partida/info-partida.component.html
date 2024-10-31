@@ -1,246 +1,307 @@
-<button (click)="atualizaDados()" mat-raised-button color="primary">
-  Buscar Dados
+<button (click)="atualizaDados()"
+	mat-raised-button
+	color="primary">
+	Buscar Dados
 </button>
 
 <div class="cards-container">
-  <div class="card dados">
-    <h3 class="info">
-      Rodada {{ partida.rodada }}
-    </h3>
-    <h2 class="info">
-      {{ partida.timeA_nome }} {{ partida.golsA }} x {{ partida.golsB }} {{ partida.timeB_nome }}
-    </h2>
-    <div class="info">
-      <h3 class="info-title">Data:</h3>
-      <h3 class="info-value">{{ partida.dia }}</h3>
-    </div>
-    <div class="info">
-      <h3 class="info-title">Horário:</h3>
-      <h3 class="info-value">{{ partida.horario }}</h3>
-    </div>
-    <div class="info">
-      <h3 class="info-title">Estádio:</h3>
-      <h3 class="info-value">{{ partida.local }}</h3>
-    </div>
-    <div class="info">
-      <h3 class="info-title">Árbitro:</h3>
-      <h3 class="info-value">{{ partida.juiz }}</h3>
-    </div>
-  </div>
+	<div class="card dados">
+		<h3 class="info">
+			Rodada {{ partida.rodada }}
+		</h3>
+		<h2 class="info">
+			{{ partida.timeA_nome }} {{ partida.golsA }} x {{ partida.golsB }} {{ partida.timeB_nome }}
+		</h2>
+		<div class="info">
+			<h3 class="info-title">Data:</h3>
+			<h3 class="info-value">{{ partida.dia }}</h3>
+		</div>
+		<div class="info">
+			<h3 class="info-title">Horário:</h3>
+			<h3 class="info-value">
+				{{ partida.horario }}
+			</h3>
+		</div>
+		<div class="info">
+			<h3 class="info-title">Estádio:</h3>
+			<h3 class="info-value">{{ partida.local }}</h3>
+		</div>
+		<div class="info">
+			<h3 class="info-title">Árbitro:</h3>
+			<h3 class="info-value">{{ partida.juiz }}</h3>
+		</div>
+	</div>
 
-  <div class="espacamento"></div>
+	<div class="espacamento"></div>
 
-  <div class="card dados">
-    <div class="header">
-      <div class="col">Hora</div>
-      <div class="col">Detalhe do Evento</div>
-      <div class="col">ID Jogador 1</div>
-    </div>
+	<div class="card dados">
+		<div class="header">
+			<div class="col">Hora</div>
+			<div class="col">Detalhe do Evento</div>
+			<div class="col">ID Jogador 1</div>
+		</div>
 
-    <div class="body" *ngFor="let detalhe of cartoes">
-      <div class="col">{{ detalhe.hora }}</div>
-      <div class="col">{{ detalhe.detalheEv }}</div>
-      <div class="col">{{ detalhe.idJogador1 }}</div>
-    </div>
+		<div *ngFor="let detalhe of cartoes"
+			class="body">
+			<div class="col">{{ detalhe.hora }}</div>
+			<div class="col">
+				{{ detalhe.detalheEv }}
+			</div>
+			<div class="col">
+				{{ detalhe.idJogador1 }}
+			</div>
+		</div>
 
+		<div class="header">
+			<div class="col">Hora</div>
+			<div class="col">Detalhe do Evento</div>
+			<div class="col">ID Jogador 1</div>
+			<div class="col">ID Jogador 2</div>
+		</div>
 
-  <div class="header">
-    <div class="col">Hora</div>
-    <div class="col">Detalhe do Evento</div>
-    <div class="col">ID Jogador 1</div>
-    <div class="col">ID Jogador 2</div>
-  </div>
-
-  <div class="body" *ngFor="let detalhe of substituicoes">
-    <div class="col">{{ detalhe.hora }}</div>
-    <div class="col">{{ detalhe.detalheEv }}</div>
-    <div class="col">{{ detalhe.idJogador1 }}</div>
-    <div class="col">{{ detalhe.idJogador2 }}</div>
-  </div>
-</div>
+		<div *ngFor="let detalhe of substituicoes"
+			class="body">
+			<div class="col">{{ detalhe.hora }}</div>
+			<div class="col">
+				{{ detalhe.detalheEv }}
+			</div>
+			<div class="col">
+				{{ detalhe.idJogador1 }}
+			</div>
+			<div class="col">
+				{{ detalhe.idJogador2 }}
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="espacamento"></div>
 
+<!-- para via de testes -->
 <div class="card dados">
-				<h2>Estatísticas:</h2>
+  <h2>Estatísticas:</h2>
 
-				<div>
-					<h3 class="estat-title">
-						{{estatisticas.timeA_nome}} x {{estatisticas.timeB_nome}}
-					</h3>
-				</div>
+  <div class="card dados">
+    <h2>Posse de Bola:</h2>
+    <div class="grafico">
+      <canvas id="doughnutChart">{{chart}}</canvas>
+    </div>
+  </div>
 
-				<div class="estat">
-					<h3 class="estat-title">Chutes a gol:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.chutesGolA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.chutesGolB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Chutes fora:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.chutesForaA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.chutesForaB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Chutes bloqueados:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.chutesBloqA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.chutesBloqB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">
-						Chutes dentro da área:
-					</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.chutesDentroAreaA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.chutesDentroAreaB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Faltas:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.faltasA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.faltasB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Escanteios:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.escanteiosA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.escanteiosB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Impedimentos:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.impedimentosA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.impedimentosB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Cartões Amarelos:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.cAmarelosA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.cAmarelosB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Cartões Vermelhos:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.cVermelhosA || '0'}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.cVermelhosB || '0'}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Defesas do goleiro:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.defesasGoleiroA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.defesasGoleiroB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Posse de bola:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.posseBolaA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.posseBolaB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Total de passes:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.totalPassesA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.totalPassesB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">Passes certos:</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.passesCertosA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.passesCertosB}}
-						</p>
-					</div>
-				</div>
-				<div class="estat">
-					<h3 class="estat-title">
-						Porcentagem de passes certos:
-					</h3>
-					<div class="estat-values">
-						<p class="left">
-							{{estatisticas.porcentPassesA}}
-						</p>
-						<h1 class="barraVertical">|</h1>
-						<p class="right">
-							{{estatisticas.porcentPassesB}}
-						</p>
-					</div>
-				</div>
-			</div>
+  <div class="card dados">
+    <h2>Chutes:</h2>
+
+    <div class="juntaGraficos">
+
+      <div class="grafico g1">
+        <canvas id="horizontalBarChart2"  style="border: none;">{{chart}}</canvas>
+      </div>
+
+      <div class="grafico g2">
+        <canvas id="horizontalBarChart2b"  style="border: none;">{{chart}} </canvas>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <div class="card dados">
+    <h2>Chutes:</h2>
+    <div class="">
+      <canvas id="horizontalBarChart">{{chart}}</canvas>
+    </div>
+  </div>
+
+
+
+  <div>
+    <h3 class="estat-title">{{ estatisticas.timeA_nome }} x {{ estatisticas.timeB_nome }}</h3>
+  </div>
+
+
+</div>
+
+<!-- estatisticas original -->
+<div class="card dados">
+	<h2>Estatísticas:</h2>
+
+	<div>
+		<h3 class="estat-title">
+			{{estatisticas.timeA_nome}} x {{estatisticas.timeB_nome}}
+		</h3>
+	</div>
+
+	<div class="estat">
+		<h3 class="estat-title">Chutes a gol:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.chutesGolA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.chutesGolB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Chutes fora:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.chutesForaA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.chutesForaB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Chutes bloqueados:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.chutesBloqA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.chutesBloqB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">
+			Chutes dentro da área:
+		</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.chutesDentroAreaA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.chutesDentroAreaB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Faltas:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.faltasA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.faltasB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Escanteios:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.escanteiosA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.escanteiosB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Impedimentos:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.impedimentosA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.impedimentosB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Cartões Amarelos:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.cAmarelosA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.cAmarelosB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Cartões Vermelhos:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.cVermelhosA || '0'}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.cVermelhosB || '0'}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Defesas do goleiro:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.defesasGoleiroA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.defesasGoleiroB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Posse de bola:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.posseBolaA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.posseBolaB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Total de passes:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.totalPassesA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.totalPassesB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">Passes certos:</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.passesCertosA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.passesCertosB}}
+			</p>
+		</div>
+	</div>
+	<div class="estat">
+		<h3 class="estat-title">
+			Porcentagem de passes certos:
+		</h3>
+		<div class="estat-values">
+			<p class="left">
+				{{estatisticas.porcentPassesA}}
+			</p>
+			<h1 class="barraVertical">|</h1>
+			<p class="right">
+				{{estatisticas.porcentPassesB}}
+			</p>
+		</div>
+	</div>
+</div>
