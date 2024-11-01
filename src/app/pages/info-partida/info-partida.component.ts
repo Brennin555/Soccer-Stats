@@ -1,254 +1,70 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { Estatisticas } from 'src/app/interfaces/estatisticas';
 import { Partida } from 'src/app/interfaces/partida';
 import { DetalhesPartida } from 'src/app/interfaces/detalhesPartida';
-import { ChartData, ChartOptions } from 'chart.js';
-import { Chart, registerables } from 'chart.js';
-import 'chartjs-plugin-datalabels';
-import { min } from 'rxjs';
 
-
-Chart.register(...registerables);
-
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ChartComponent,
+  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexStroke,
+  ApexGrid,
+  ApexYAxis,
+  ApexXAxis,
+  ApexPlotOptions,
+  ApexTooltip,
+  ApexLegend,
+  ApexFill
+} from "ng-apexcharts";
+// Chart.register(...registerables);
 @Component({
   selector: 'app-info-partida',
   templateUrl: './info-partida.component.html',
   styleUrls: ['./info-partida.component.scss']
 })
 export class InfoPartidaComponent implements OnInit {
-  chart: any
-  chartBarA: any
-  chartBarB: any
-  cor1 = "#2b39ff";
-  cor2 = "#ff4a2b";
 
+  cor1 = "#001f3f"; // Azul
+  cor2 = "#01290d"; // Verde
+  cor3 = "#FF4136"; // Vermelho
 
-  public configDonuts: any = {
-    type: 'doughnut',
-    data: {
-      labels: ['Time A', 'Time B'],
-      datasets: [
-        {
-          data: [0, 0],
-          backgroundColor: [this.cor1, this.cor2],
-          hoverBackgroundColor: [this.cor1, this.cor2]
-        },
-      ]
-    }
+  chartOptionsBar: {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    stroke: ApexStroke;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+    yaxis: ApexYAxis;
+    xaxis: ApexXAxis;
+    grid: ApexGrid;
+    colors: string[];
+    tooltip: ApexTooltip;
+    title: ApexTitleSubtitle;
   };
 
-  public configHorizontalBar: any = {
-    type: 'bar',
-    data: {
-      labels: ['Total de chutes', 'Chutes a gol', 'Chutes Bloqueados', 'Chutes fora', 'Chutes dentro da área', 'Chutes fora da área'],
-      datasets: [
-        {
-          label: 'Time A',
-          data: [],
-          backgroundColor: this.cor1,
-          borderColor: this.cor1,
-          borderWidth: 1,
-          borderRadius: 10
-        },
-        {
-          label: 'Time B',
-          data: [],
-          backgroundColor: this.cor2,
-          borderColor: this.cor2,
-          borderWidth: 1,
-          borderRadius: 10,
-        },
-      ]
-    },
-    options: {
-      indexAxis: 'y',
-      scales: {
-        x: {
-          beginAtZero: true,
-          min: -30,
-          max: 30,
-          title: {
-            display: true,
-            text: 'Número de Chutes'
-          },
-          grid: {
-            display: false
-          }
-        },
-
-      }
-    }
+  chartOptionsDonut: {
+    series: number[];
+    chart: ApexChart;
+    labels: string[];
+    colors: string[];
+    tooltip: ApexTooltip;
+    title: ApexTitleSubtitle;
   };
 
-  public configHorizontalBar2A: any = {
-    type: 'bar',
-    data: {
-      labels: ['Total de chutes', 'Chutes a gol', 'Chutes Bloqueados', 'Chutes fora'],
-
-      datasets: [
-        {
-          label: 'Chutes total',
-          data: [],
-          backgroundColor: this.cor1,
-          borderColor: this.cor1,
-          borderWidth: 1,
-          borderRadius: 10
-        },
-        {
-          label: 'Chutes a gol',
-          data: [],
-          backgroundColor: this.cor1,
-          borderColor: this.cor1,
-          borderWidth: 1,
-          borderRadius: 10,
-        },
-        {
-          label: 'Chutes Bloqueados',
-          data: [],
-          backgroundColor: this.cor1,
-          borderColor: this.cor1,
-          borderWidth: 1,
-          borderRadius: 10,
-        },
-        {
-          label: 'Chutes fora',
-          data: [],
-          backgroundColor: this.cor1,
-          borderColor: this.cor1,
-          borderWidth: 1,
-          borderRadius: 10,
-        },
-      ]
-    },
-    options: {
-      indexAxis: 'y',
-      scales: {
-        x: {
-          beginAtZero: false,
-          min: -30,
-          max: 0,
-          title: {
-            display: false, // Não exibe o título
-          },
-          grid: {
-            display: false // Não exibe a grade
-          },
-          ticks: {
-            display: false // Não exibe os rótulos dos ticks
-          },
-        },
-        y: {
-          grid: {
-            display: false // Não exibe a grade do eixo Y
-          },
-          ticks: {
-            display: false // Não exibe os rótulos dos ticks do eixo Y
-          },
-        }
-      },
-      plugins: {
-        legend: {
-          display: false // Não exibe a legenda
-        },
-        tooltip: {
-          enabled: false // Não exibe os tooltips
-        }
-      },
-      elements: {
-        bar: {
-          borderWidth: 0,
-          barPercentage: 0.8,
-          categoryPercentage: 2
-        }
-      },
-      backgroundColor: 'transparent' // Define o fundo como transparente
-    }
-  };
-
-  public configHorizontalBar2B: any = {
-    type: 'bar',
-    data: {
-      labels: ['Total de chutes', 'Chutes a gol', 'Chutes Bloqueados', 'Chutes fora'],
-
-      datasets: [
-        {
-          label: 'Chutes total',
-          data: [],
-          backgroundColor: this.cor2,
-          borderColor: this.cor2,
-          borderWidth: 1,
-          borderRadius: 10
-        },
-        {
-          label: 'Chutes a gol',
-          data: [],
-          backgroundColor: this.cor2,
-          borderColor: this.cor2,
-          borderWidth: 1,
-          borderRadius: 10,
-        },
-        {
-          label: 'Chutes Bloqueados',
-          data: [],
-          backgroundColor: this.cor2,
-          borderColor: this.cor2,
-          borderWidth: 1,
-          borderRadius: 10,
-        },
-        {
-          label: 'Chutes fora',
-          data: [],
-          backgroundColor: this.cor2,
-          borderColor: this.cor2,
-          borderWidth: 1,
-          borderRadius: 10,
-        },
-      ]
-    },
-    options: {
-      indexAxis: 'y',
-      scales: {
-        x: {
-          beginAtZero: false,
-          min: 0,
-          max: 30,
-          title: {
-            display: false, // Não exibe o título
-          },
-          grid: {
-            display: false // Não exibe a grade
-          },
-          ticks: {
-            display: false // Não exibe os rótulos dos ticks
-          },
-        },
-        y: {
-          grid: {
-            display: false // Não exibe a grade do eixo Y
-          },
-          ticks: {
-            display: false // Não exibe os rótulos dos ticks do eixo Y
-          },
-        }
-      },
-      plugins: {
-        legend: {
-          display: false // Não exibe a legenda
-        },
-        tooltip: {
-          enabled: false // Não exibe os tooltips
-        }
-      },
-      elements: {
-        bar: {
-          borderWidth: 0,
-          barPercentage: 0.8,
-          categoryPercentage: 2
-        }
-      },
-      backgroundColor: 'transparent' // Define o fundo como transparente
-    }
+  ChartOptionsBarGrouped : {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+    stroke: ApexStroke;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    colors: string[];
+    fill: ApexFill;
+    legend: ApexLegend;
   };
 
   estatisticas = {} as Estatisticas;
@@ -261,12 +77,190 @@ export class InfoPartidaComponent implements OnInit {
 
   idPartida: string = '';
   constructor(
-    private api: ApiService
-  ) { }
+    private api: ApiService,
+  ) {
+
+    this.chartOptionsBar = {
+      title: {
+        text: "Chutes",
+        align: "center"
+      },
+      series: [
+        {
+          name: "Time A",
+          data: []
+        },
+        {
+          name: "Time B",
+          data: []
+        }
+      ],
+      chart: {
+        type: "bar",
+        height: 440,
+        stacked: true
+      },
+      colors: [this.cor1, this.cor2],
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: "50%",
+          borderRadius: 10,
+        },
+
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return String(Math.abs(Number(val)));
+        }
+      },
+      stroke: {
+        width: 1,
+        colors: ["#fff"]
+      },
+
+      grid: {
+        xaxis: {
+          lines: {
+            show: false
+          }
+        }
+      },
+      yaxis: {
+        min: -30,
+        max: 30,
+      },
+      tooltip: {
+        shared: false,
+        x: {
+          formatter: function(val) {
+            return val.toString();
+          }
+        },
+        y: {
+          formatter: function(val) {
+            return String(Math.abs(val));
+          }
+        }
+      },
+      xaxis: {
+        categories: [
+          "Total de Chutes",
+          "Chutes a Gol",
+          "Chutes Bloqueados",
+          "Chutes para Fora",
+          "Chutes dentro da Área",
+          "Chutes fora da Área"
+        ],
+        title: {
+          text: "Quantidade"
+        },
+        labels: {
+          show: false,
+          formatter: function(val) {
+            return String(Math.abs(Math.round(parseInt(val, 10))));
+          }
+        }
+      }
+    };
+
+    this.chartOptionsDonut = {
+      title: { text: "Posse de Bola", align: "center" },
+      series: [], // Dados de exemplo
+      chart: { type: "donut", height: 300 },
+      labels: ["Time A", "Time B"],
+      colors: [this.cor1, this.cor2],
+      tooltip: {
+        y: { formatter: (val) => `${val}%` }
+      }
+    };
+
+    this.ChartOptionsBarGrouped = {
+      yaxis: {
+        title: {
+          text: "Values"
+        }
+      },
+      series: [
+        {
+          name: "TimeA Passes certos",
+          group: "budget",
+          data: [44000]
+        },
+        {
+          name: "TimeA passes errados",
+          group: "budget",
+          data: [13000]
+        },
+        {
+          name: "TimeA total de passes",
+          group: "totalA",
+          data: [48000]
+        },
+        {
+          name: "TimeB Passes certos",
+          group: "actual",
+          data: [48000]
+        },
+        {
+          name: "TimeB passes errados",
+          group: "actual",
+          data: [20000]
+        },
+
+        {
+          name: "TimeB total de passes",
+          group: "totalB",
+          data: [48000]
+        },
+      ],
+      chart: {
+        type: "bar",
+        height: 350,
+        stacked: true
+      },
+      stroke: {
+        width: 1,
+        colors: ["#fff"]
+      },
+      dataLabels: {
+        formatter: (val) => {
+          return String(val);
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      },
+      xaxis: {
+        categories: [
+          "TimeA",
+        ],
+        labels: {
+          formatter: (val) => {
+            return (val);
+          }
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      colors: [this.cor2, this.cor3, this.cor1],
+      legend: {
+        position: "top",
+        horizontalAlign: "left"
+      }
+    };
+  }
+
 
   ngOnInit(): void {
     this.pegarURL();
     this.atualizaDados();
+
+
   }
 
   // pegar idPartida que esta na url
@@ -282,66 +276,46 @@ export class InfoPartidaComponent implements OnInit {
       (data) => {
         if (data && data[0]) {
           this.estatisticas = data[0];
-          // console.log('Estatísticas:', this.estatisticas);
 
-          this.configDonuts.data.labels = [this.estatisticas.timeA_nome, this.estatisticas.timeB_nome];
-          this.configDonuts.data.datasets[0].data = [parseInt(this.estatisticas.posseBolaA), parseInt(this.estatisticas.posseBolaB)];
-          this.chart = new Chart('doughnutChart', this.configDonuts);
+          this.chartOptionsDonut.labels = [this.estatisticas.timeA_nome, this.estatisticas.timeB_nome];
+          this.chartOptionsDonut.series = [parseInt(this.estatisticas.posseBolaA), parseInt(this.estatisticas.posseBolaB)];
+          this.chartOptionsDonut.title.text = `Posse de Bola: ${this.estatisticas.posseBolaA}% x ${this.estatisticas.posseBolaB}%`;
 
-          // -----------
-          this.configHorizontalBar2A.data.datasets[0].data = [
-            -Number(this.estatisticas.totalChutesA),
-            -Number(this.estatisticas.chutesGolA),
-            -Number(this.estatisticas.chutesBloqA),
-            -Number(this.estatisticas.chutesForaA)
+          this.chartOptionsBar.series = [
+            {
+              name: this.estatisticas.timeA_nome,
+              data: [
+                this.estatisticas.totalChutesA,
+                this.estatisticas.chutesGolA,
+                this.estatisticas.chutesBloqA,
+                this.estatisticas.chutesForaA,
+                this.estatisticas.chutesDentroAreaA,
+                this.estatisticas.chutesForaAreaA
+              ]
+            },
+            {
+              name: this.estatisticas.timeB_nome,
+              data: [
+                -this.estatisticas.totalChutesB,
+                -this.estatisticas.chutesGolB,
+                -this.estatisticas.chutesBloqB,
+                -this.estatisticas.chutesForaB,
+                -this.estatisticas.chutesDentroAreaB,
+                -this.estatisticas.chutesForaAreaB
+              ]
+            }
           ];
 
-          this.chartBarA = new Chart('horizontalBarChart2', this.configHorizontalBar2A);
+          let passesErradosA = this.estatisticas.totalPassesA - this.estatisticas.passesCertosA;
+          let passesErradosB = this.estatisticas.totalPassesB - this.estatisticas.passesCertosB;
 
-          this.configHorizontalBar2B.data.datasets[0].data = [
-            Number(this.estatisticas.totalChutesB),
-            Number(this.estatisticas.chutesGolB),
-            Number(this.estatisticas.chutesBloqB),
-            Number(this.estatisticas.chutesForaB)
-          ];
+          this.ChartOptionsBarGrouped.series[0].data = [this.estatisticas.passesCertosA];
+          this.ChartOptionsBarGrouped.series[1].data = [passesErradosA];
+          this.ChartOptionsBarGrouped.series[2].data = [this.estatisticas.totalPassesA];
+          this.ChartOptionsBarGrouped.series[3].data = [this.estatisticas.passesCertosB];
+          this.ChartOptionsBarGrouped.series[4].data = [passesErradosB];
+          this.ChartOptionsBarGrouped.series[5].data = [this.estatisticas.totalPassesB];
 
-
-          this.chartBarB = new Chart('horizontalBarChart2b', this.configHorizontalBar2B);
-          // ------------
-          // Adicionando os nomes dos times
-          this.configHorizontalBar.labels = [
-            'Total de chutes',
-            'Chutes a gol',
-            'Chutes Bloqueados',
-            'Chutes fora',
-            'Chutes dentro da área',
-            'Chutes fora da área'
-          ];
-
-          this.configHorizontalBar.data.datasets[0].label = this.estatisticas.timeA_nome;
-          this.configHorizontalBar.data.datasets[1].label = this.estatisticas.timeB_nome;
-
-          // Atribuindo os dados do Time A (valores positivos)
-          this.configHorizontalBar.data.datasets[0].data = [
-            -Number(this.estatisticas.totalChutesA),
-            -Number(this.estatisticas.chutesGolA),
-            -Number(this.estatisticas.chutesBloqA),
-            -Number(this.estatisticas.chutesForaA),
-            -Number(this.estatisticas.chutesDentroAreaA),
-            -Number(this.estatisticas.chutesForaAreaA)
-          ];
-
-          // Atribuindo os dados do Time B (valores negativos)
-          this.configHorizontalBar.data.datasets[1].data = [
-            Number(this.estatisticas.totalChutesB),  // Colocando os valores negativos para o Time B
-            Number(this.estatisticas.chutesGolB),
-            Number(this.estatisticas.chutesBloqB),
-            Number(this.estatisticas.chutesForaB),
-            Number(this.estatisticas.chutesDentroAreaB),
-            Number(this.estatisticas.chutesForaAreaB)
-          ];
-
-          this.chart = new Chart('horizontalBarChart', this.configHorizontalBar);
         }
       },
       (error) => {

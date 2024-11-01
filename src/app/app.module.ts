@@ -1,4 +1,3 @@
-import { registerables } from './../../node_modules/chart.js/types/index.esm.d';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -16,7 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TesteTimeComponent } from './pages/teste-time/teste-time.component';
 import { InfoPartidaComponent } from './pages/info-partida/info-partida.component';
 import { InfoTimeComponent } from './pages/info-time/info-time.component';
-import { NgChartsModule } from 'ng2-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -35,9 +34,9 @@ import { NgChartsModule } from 'ng2-charts';
     MatListModule,
     MatTableModule,
     MatCardModule,
-    // FlexLayoutModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgApexchartsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
