@@ -16,6 +16,7 @@ import { TesteTimeComponent } from './pages/teste-time/teste-time.component';
 import { InfoPartidaComponent } from './pages/info-partida/info-partida.component';
 import { InfoTimeComponent } from './pages/info-time/info-time.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     MatTableModule,
     MatCardModule,
     BrowserAnimationsModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    MatIconModule
 
   ],
   providers: [],

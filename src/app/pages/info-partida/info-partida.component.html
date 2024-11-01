@@ -5,256 +5,248 @@
 </button>
 
 <div class="cards-container">
-	<div class="card dados">
-		<h3 class="info">
-			Rodada {{ partida.rodada }}
-		</h3>
-		<h2 class="info">
-			{{ partida.timeA_nome }} {{ partida.golsA }} x {{ partida.golsB }} {{ partida.timeB_nome }}
-		</h2>
-		<div class="info">
-			<h3 class="info-title">Data:</h3>
-			<h3 class="info-value">{{ partida.dia }}</h3>
+	<div class="card menor dados alinhar">
+		<div>
+			<img [src]="partida.timeA_escudo"
+				class="escudo">
 		</div>
-		<div class="info">
-			<h3 class="info-title">Horário:</h3>
-			<h3 class="info-value">
-				{{ partida.horario }}
+		<div>
+			<h3 class="info">
+				Rodada {{ partida.rodada }}
 			</h3>
+			<h2 class="info">
+				{{ partida.timeA_nome }} {{ partida.golsA }} x {{ partida.golsB }} {{ partida.timeB_nome }}
+			</h2>
+			<div class="info">
+				<h3 class="info-title">Data:</h3>
+				<h3 class="info-value">{{ partida.dia }}</h3>
+			</div>
+			<div class="info">
+				<h3 class="info-title">Horário:</h3>
+				<h3 class="info-value">
+					{{ partida.horario }}
+				</h3>
+			</div>
+			<div class="info">
+				<h3 class="info-title">Estádio:</h3>
+				<h3 class="info-value">{{ partida.local }}</h3>
+			</div>
+			<div class="info">
+				<h3 class="info-title">Árbitro:</h3>
+				<h3 class="info-value">{{ partida.juiz }}</h3>
+			</div>
 		</div>
-		<div class="info">
-			<h3 class="info-title">Estádio:</h3>
-			<h3 class="info-value">{{ partida.local }}</h3>
-		</div>
-		<div class="info">
-			<h3 class="info-title">Árbitro:</h3>
-			<h3 class="info-value">{{ partida.juiz }}</h3>
+		<div>
+			<img [src]="partida.timeB_escudo"
+				class="escudo">
 		</div>
 	</div>
 
 	<div class="espacamento"></div>
 
-	<div class="card dados">
-		<div class="header">
-			<div class="col">Hora</div>
-			<div class="col">Detalhe do Evento</div>
-			<div class="col">ID Jogador 1</div>
-		</div>
+	<!-- para via de testes -->
+	<div class="card maior dados">
+		<h2>Estatísticas:</h2>
+	</div>
 
-		<div *ngFor="let detalhe of cartoes"
-			class="body">
-			<div class="col">{{ detalhe.hora }}</div>
-			<div class="col">
-				{{ detalhe.detalheEv }}
-			</div>
-			<div class="col">
-				{{ detalhe.idJogador1 }}
-			</div>
-		</div>
+	<div class="espacamento"></div>
+	<div class="card maior dados">
+		<div class="two-column-layout">
 
-		<div class="header">
-			<div class="col">Hora</div>
-			<div class="col">Detalhe do Evento</div>
-			<div class="col">ID Jogador 1</div>
-			<div class="col">ID Jogador 2</div>
-		</div>
+			<div class="card maior dados">
+				<div class="header">
+					<div class="col">Gols/Assistências</div>
+				</div>
+				<div *ngFor="let detalhe of gols"
+					class="body">
+					<div class="col">
+						<div class="alinhar">
+							<!-- <div *ngIf="detalhe.hora != '00:00'">{{detalhe.hora}} -</div> -->
+							<div class="divEscudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeA"
+									[src]="partida.timeA_escudo"
+									class="escudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeB"
+									[src]="partida.timeB_escudo"
+									class="escudoMini">
+							</div>
+							<div>
+								{{ detalhe.nomeJogador1 }}
+							</div>
+							<div class="gap"></div>
+							<div *ngIf="detalhe.idJogador2">
+								({{ detalhe.nomeJogador2 }})
+							</div>
 
-		<div *ngFor="let detalhe of substituicoes"
-			class="body">
-			<div class="col">{{ detalhe.hora }}</div>
-			<div class="col">
-				{{ detalhe.detalheEv }}
+						</div>
+					</div>
+					<div *ngIf="detalhe.detalheEv == 'Cartão Vermelho'"
+						class="col">
+						<div class="alinhar">
+							<div class="cartaoVermelho"></div>
+							<div>
+								{{ detalhe.nomeJogador1 }}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col">
-				{{ detalhe.idJogador1 }}
+
+			<div class="card maior dados">
+				<div class="header">
+					<div class="col">Substituições</div>
+				</div>
+				<div *ngFor="let detalhe of substituicoes"
+					class="body">
+					<div class="col">
+						<div class="alinharSubst">
+							<div class="divEscudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeA"
+									[src]="partida.timeA_escudo"
+									class="escudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeB"
+									[src]="partida.timeB_escudo"
+									class="escudoMini">
+							</div>
+							<div>
+								{{tiraSubst(detalhe.detalheEv)}}.
+							</div>
+							<div class="gap"></div>
+							<div class="textoVermelho">
+								<mat-icon class="seta">arrow_downward</mat-icon>
+								{{ detalhe.nomeJogador1 }}
+							</div>
+							<div class="gap"></div>
+							<div class="textoAzul">
+								<mat-icon class="seta">arrow_upward</mat-icon>
+								{{ detalhe.nomeJogador2 }}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col">
-				{{ detalhe.idJogador2 }}
-			</div>
+
 		</div>
 	</div>
-</div>
+	<div class="espacamento"></div>
+	<div class="card maior dados">
+		<div class="two-column-layout">
 
-<div class="espacamento"></div>
+			<div class="card maior dados">
+				<div class="header">
+					<div class="col">Cartões</div>
+				</div>
+				<div *ngFor="let detalhe of cartoes"
+					class="body">
+					<div *ngIf="detalhe.detalheEv == 'Cartão Amarelo'"
+						class="col">
+						<div class="alinhar">
+							<div class="divEscudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeA"
+									[src]="partida.timeA_escudo"
+									class="escudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeB"
+									[src]="partida.timeB_escudo"
+									class="escudoMini">
+							</div>
+							<!-- <div *ngIf="detalhe.hora != '00:00'">{{detalhe.hora}} -</div> -->
+							<div class="cartaoAmarelo"></div>
+							<div>
+								{{ detalhe.nomeJogador1 }}
+							</div>
+						</div>
+					</div>
+					<div *ngIf="detalhe.detalheEv == 'Cartão Vermelho'"
+						class="col">
+						<div class="alinhar">
+							<div class="cartaoVermelho"></div>
+							<div>
+								{{ detalhe.nomeJogador1 }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-<!-- para via de testes -->
-<div class="card dados">
-  <h2>Estatísticas:</h2>
+			<div class="card maior dados">
+				<apx-chart [title]="chartOptionsBarGroupedCartoes.title"
+					[series]="chartOptionsBarGroupedCartoes.series"
+					[chart]="chartOptionsBarGroupedCartoes.chart"
+					[stroke]="chartOptionsBarGroupedCartoes.stroke"
+					[dataLabels]="chartOptionsBarGroupedCartoes.dataLabels"
+					[plotOptions]="chartOptionsBarGroupedCartoes.plotOptions"
+					[xaxis]="chartOptionsBarGroupedCartoes.xaxis"
+					[colors]="chartOptionsBarGroupedCartoes.colors"
+					[fill]="chartOptionsBarGroupedCartoes.fill"
+					[yaxis]="chartOptionsBarGroupedCartoes.yaxis"
+					[legend]="chartOptionsBarGroupedCartoes.legend"></apx-chart>
+			</div>
 
-  <div class="card dados">
-    <h2>Posse de Bola:</h2>
-    <!-- <div class="grafico">
-      <canvas id="doughnutChart">{{chart}}</canvas>
-    </div> -->
-
-    <apx-chart [series]="chartOptionsDonut.series" [chart]="chartOptionsDonut.chart"
-    [labels]="chartOptionsDonut.labels" [title]="chartOptionsDonut.title"
-    [colors]="chartOptionsDonut.colors" [tooltip]="chartOptionsDonut.tooltip"></apx-chart>
-
-
-  </div>
-
-  <div class="card dados">
-    <h2>Chutes:</h2>
-
-    <div id="chart">
-      <apx-chart
-        [series]="chartOptionsBar.series"
-        [chart]="chartOptionsBar.chart"
-        [dataLabels]="chartOptionsBar.dataLabels"
-        [stroke]="chartOptionsBar.stroke"
-        [colors]="chartOptionsBar.colors"
-        [title]="chartOptionsBar.title"
-        [grid]="chartOptionsBar.grid"
-        [tooltip]="chartOptionsBar.tooltip"
-        [plotOptions]="chartOptionsBar.plotOptions"
-        [yaxis]="chartOptionsBar.yaxis"
-        [xaxis]="chartOptionsBar.xaxis"
-      ></apx-chart>
     </div>
-
   </div>
+  <div class="espacamento"></div>
+  <div class="card maior dados">
+		<div class="two-column-layout">
 
-  <div class="card dados">
-    <apx-chart
-    [series]="ChartOptionsBarGrouped.series"
-    [chart]="ChartOptionsBarGrouped.chart"
-    [stroke]="ChartOptionsBarGrouped.stroke"
-    [dataLabels]="ChartOptionsBarGrouped.dataLabels"
-    [plotOptions]="ChartOptionsBarGrouped.plotOptions"
-    [xaxis]="ChartOptionsBarGrouped.xaxis"
-    [colors]="ChartOptionsBarGrouped.colors"
-    [fill]="ChartOptionsBarGrouped.fill"
-    [yaxis]="ChartOptionsBarGrouped.yaxis"
-    [legend]="ChartOptionsBarGrouped.legend"
-  ></apx-chart>
+			<div class="card maior dados">
+				<apx-chart [series]="chartOptionsBarChutes.series"
+					[chart]="chartOptionsBarChutes.chart"
+					[dataLabels]="chartOptionsBarChutes.dataLabels"
+					[stroke]="chartOptionsBarChutes.stroke"
+					[colors]="chartOptionsBarChutes.colors"
+					[title]="chartOptionsBarChutes.title"
+					[grid]="chartOptionsBarChutes.grid"
+					[tooltip]="chartOptionsBarChutes.tooltip"
+					[plotOptions]="chartOptionsBarChutes.plotOptions"
+					[yaxis]="chartOptionsBarChutes.yaxis"
+					[xaxis]="chartOptionsBarChutes.xaxis"></apx-chart>
+			</div>
+
+			<div class="card maior dados">
+				<apx-chart [title]="chartOptionsBarGroupedPasses.title"
+					[series]="chartOptionsBarGroupedPasses.series"
+					[chart]="chartOptionsBarGroupedPasses.chart"
+					[stroke]="chartOptionsBarGroupedPasses.stroke"
+					[dataLabels]="chartOptionsBarGroupedPasses.dataLabels"
+					[plotOptions]="chartOptionsBarGroupedPasses.plotOptions"
+					[xaxis]="chartOptionsBarGroupedPasses.xaxis"
+					[colors]="chartOptionsBarGroupedPasses.colors"
+					[fill]="chartOptionsBarGroupedPasses.fill"
+					[yaxis]="chartOptionsBarGroupedPasses.yaxis"
+					[legend]="chartOptionsBarGroupedPasses.legend"></apx-chart>
+			</div>
+
+    </div>
   </div>
+  <div class="espacamento"></div>
+  <div class="card maior dados">
+		<div class="two-column-layout">
 
-  <div>
-    <h3 class="estat-title">{{ estatisticas.timeA_nome }} x {{ estatisticas.timeB_nome }}</h3>
-  </div>
+			<div id="chart"
+				class="card maior dados">
+				<apx-chart [series]="chartOptionsBarGeral.series"
+					[chart]="chartOptionsBarGeral.chart"
+					[dataLabels]="chartOptionsBarGeral.dataLabels"
+					[stroke]="chartOptionsBarGeral.stroke"
+					[colors]="chartOptionsBarGeral.colors"
+					[title]="chartOptionsBarGeral.title"
+					[grid]="chartOptionsBarGeral.grid"
+					[tooltip]="chartOptionsBarGeral.tooltip"
+					[plotOptions]="chartOptionsBarGeral.plotOptions"
+					[yaxis]="chartOptionsBarGeral.yaxis"
+					[xaxis]="chartOptionsBarGeral.xaxis"></apx-chart>
+			</div>
 
+			<div class="card maior dados">
+				<apx-chart [series]="chartOptionsDonut.series"
+					[chart]="chartOptionsDonut.chart"
+					[labels]="chartOptionsDonut.labels"
+					[title]="chartOptionsDonut.title"
+					[colors]="chartOptionsDonut.colors"
+					[tooltip]="chartOptionsDonut.tooltip"></apx-chart>
+			</div>
 
-</div>
-
-<!-- estatisticas original -->
-<div class="card dados">
-	<h2>Estatísticas:</h2>
-
-	<div>
-		<h3 class="estat-title">
-			{{estatisticas.timeA_nome}} x {{estatisticas.timeB_nome}}
-		</h3>
-	</div>
-
-	<div class="estat">
-		<h3 class="estat-title">Faltas:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.faltasA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.faltasB}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">Escanteios:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.escanteiosA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.escanteiosB}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">Impedimentos:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.impedimentosA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.impedimentosB}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">Cartões Amarelos:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.cAmarelosA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.cAmarelosB}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">Cartões Vermelhos:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.cVermelhosA || '0'}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.cVermelhosB || '0'}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">Defesas do goleiro:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.defesasGoleiroA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.defesasGoleiroB}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">Total de passes:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.totalPassesA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.totalPassesB}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">Passes certos:</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.passesCertosA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.passesCertosB}}
-			</p>
-		</div>
-	</div>
-	<div class="estat">
-		<h3 class="estat-title">
-			Porcentagem de passes certos:
-		</h3>
-		<div class="estat-values">
-			<p class="left">
-				{{estatisticas.porcentPassesA}}
-			</p>
-			<h1 class="barraVertical">|</h1>
-			<p class="right">
-				{{estatisticas.porcentPassesB}}
-			</p>
 		</div>
 	</div>
 </div>
+<div class="espacamento">.</div>

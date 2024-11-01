@@ -35,6 +35,28 @@ export class SoccerStatsComponent {
     this.api.atualizaPartidas();
   }
 
+  pegaEscudoTime(partida: Partida): any {
+    this.api.getEscudoTime(partida.timeA).subscribe(
+      (data) => {
+        let escudo = data;
+        partida.timeA_escudo = escudo.escudo;
+      },
+      (error) => {
+        console.error('Erro ao buscar escudo do time A:', error);
+      }
+    );
+    this.api.getEscudoTime(partida.timeB).subscribe(
+      (data) => {
+        let escudo = data;
+        partida.timeB_escudo = escudo.escudo;
+      },
+      (error) => {
+        console.error('Erro ao buscar escudo do time B:', error);
+      }
+    );
+  }
+
+
   atualizaDados(): void {
     this.api.getPartidas().subscribe((data: any) => {
       this.partidas = data;
@@ -45,6 +67,7 @@ export class SoccerStatsComponent {
       this.partidas.forEach((partida) => {
         partida = this.api.tratarHorario(partida);
         partida.rodada = this.api.filtraRodada(partida.rodada);
+        this.pegaEscudoTime(partida);
       });
     });
 

@@ -3,8 +3,10 @@ export interface Partida {
     rodada: string;
     timeA: string;
     timeA_nome: string;
+    timeA_escudo: string;
     timeB: string;
     timeB_nome: string;
+    timeB_escudo: string;
     juiz: string;
     dia: string;
     local: string;

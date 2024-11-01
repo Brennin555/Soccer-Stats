@@ -45,12 +45,24 @@ export class ApiService {
     return this.http.get<any>(this.apiUrl + '?jogadores');
   }
 
+  getJogadoresTime(idTime: number): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '?jogador=' + idTime);
+  }
+
+  getJogador(id: number): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '?jogador=' + id);
+  }
+
   getEstatisticas(idPartida: string): Observable<any> {
     return this.http.get<any>(this.apiUrl + '?estatisticas=true&idPartida=' + idPartida);
 }
 
 getDetalhesPartida(idPartida: string): Observable<any> {
   return this.http.get<any>(this.apiUrl + '?detalhespartida=true&idPartida=' + idPartida);
+}
+
+getEscudoTime(idTime: string): Observable<any> {
+  return this.http.get<any>(this.apiUrl + '?escudo=true&idTime=' + idTime);
 }
 
   tratarHorario(partida: Partida) {

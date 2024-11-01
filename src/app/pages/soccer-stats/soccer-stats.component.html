@@ -13,133 +13,161 @@
 	fxLayout="row"
 	fxLayoutGap="10px">
 
-	<div class="card"
+	<div class="card menor"
 		fxFlex="30">
-    <div class="alinhar">
-      <button (click)="mudaRodada(-1)"> < </button>
-      <h2>Rodada: {{rodadaEscolhida}}</h2>
-      <button (click)="mudaRodada(1)"> > </button>
-    </div>
-		<div class="partidas-container">
-				<div *ngFor="let partida of partidas" class="partidas_group">
-					<div *ngIf="partida.rodada == rodadaEscolhida" class="partida" (click)="selecionaPartida(partida)">
-						<h3>{{ partida.timeA_nome }} x {{ partida.timeB_nome }}</h3>
-						<h3>{{partida.golsA}} x {{partida.golsB}}</h3>
-						<p>
-							{{ partida.dia }}
-							{{ partida.horario }}
-						</p>
-					</div>
-          <div class="espacamento"></div>
-				</div>
+		<div class="alinhar">
+			<button (click)="mudaRodada(-1)" class="gap"><</button>
+			<h2>
+				Rodada: {{rodadaEscolhida}}
+			</h2>
+			<button (click)="mudaRodada(1)" class="gap">></button>
 		</div>
   </div>
 
-		<div class="espacamento"></div>
+  <div class="espacamento"></div>
 
-		<div class="card"
-			fxFlex="30">
-			<h2>
-				Tabela de Classificação
-			</h2>
-			<table [dataSource]="times"
-				mat-table
-				class="mat-elevation-z8">
-				<ng-container matColumnDef="posicao">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						Posição
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						{{ element.posicao }}
-					</td>
-				</ng-container>
-
-				<ng-container matColumnDef="nome">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						Time
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						<a>{{element.nome}}</a>
-					</td>
-				</ng-container>
-
-				<ng-container matColumnDef="pontos">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						Pontos
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						{{ element.pontos }}
-					</td>
-				</ng-container>
-
-				<ng-container matColumnDef="nJogos">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						Partidas
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						{{ element.nJogos }}
-					</td>
-				</ng-container>
-
-				<ng-container matColumnDef="nVitorias">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						V
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						{{ element.nVitorias }}
-					</td>
-				</ng-container>
-
-				<ng-container matColumnDef="nEmpates">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						E
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						{{ element.nEmpates }}
-					</td>
-				</ng-container>
-
-				<ng-container matColumnDef="nDerrotas">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						D
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						{{ element.nDerrotas }}
-					</td>
-				</ng-container>
-
-				<ng-container matColumnDef="nGols">
-					<th *matHeaderCellDef
-						mat-header-cell>
-						SG
-					</th>
-					<td *matCellDef="let element"
-						mat-cell>
-						{{ element.nGols }}
-					</td>
-				</ng-container>
-
-				<tbody>
-					<tr *matHeaderRowDef="displayedColumns"
-						mat-header-row></tr>
-					<tr *matRowDef="let row; columns: displayedColumns;"
-						mat-row></tr>
-				</tbody>
-			</table>
+  <div class="card maior">
+		<div class="partidas-container">
+			<div *ngFor="let partida of partidas"
+				class="partidas_group">
+				<div *ngIf="partida.rodada == rodadaEscolhida"
+					(click)="selecionaPartida(partida)"
+					class="partida">
+          <h3 class="alinhar">
+           <div class="divEscudoMini">
+             <img [src]="partida.timeA_escudo" class="escudoMini">
+          </div>
+           {{ partida.timeA_nome }} x {{ partida.timeB_nome }}
+           <div class="divEscudoMini">
+             <img [src]="partida.timeB_escudo" class="escudoMini">
+          </div>
+					</h3>
+					<h3>
+						{{partida.golsA}} x {{partida.golsB}}
+					</h3>
+					<p>
+						{{ partida.dia }}
+							{{ partida.horario }}
+					</p>
+				</div>
+				<div class="espacamento"></div>
+			</div>
 		</div>
+	</div>
+
+	<div class="espacamento"></div>
+
+	<div class="card"
+		fxFlex="30">
+		<h2>
+			Tabela de Classificação
+		</h2>
+		<table [dataSource]="times"
+			mat-table
+			class="mat-elevation-z8">
+			<ng-container matColumnDef="posicao">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					Posição
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					<div>
+						{{ element.posicao }}
+					</div>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="nome">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					Time
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					<div class="alinhar">
+						<div class="divEscudoMini">
+							<img [src]="element.escudo"
+								class="escudoMini">
+						</div>
+						<div>{{ element.nome }}</div>
+					</div>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="pontos">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					Pontos
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					{{ element.pontos }}
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="nJogos">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					Partidas
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					{{ element.nJogos }}
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="nVitorias">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					V
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					{{ element.nVitorias }}
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="nEmpates">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					E
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					{{ element.nEmpates }}
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="nDerrotas">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					D
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					{{ element.nDerrotas }}
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="nGols">
+				<th *matHeaderCellDef
+					mat-header-cell>
+					SG
+				</th>
+				<td *matCellDef="let element"
+					mat-cell>
+					{{ element.nGols }}
+				</td>
+			</ng-container>
+
+			<tbody>
+				<tr *matHeaderRowDef="displayedColumns"
+					mat-header-row></tr>
+				<tr *matRowDef="let row; columns: displayedColumns;"
+					mat-row></tr>
+			</tbody>
+		</table>
+	</div>
 
 </div>

@@ -8,4 +8,5 @@ export interface Time {
   nDerrotas: number;
   nJogos: number;
   nGols: number;
+  escudo: string;
 }

@@ -29,9 +29,25 @@ export class InfoPartidaComponent implements OnInit {
 
   cor1 = "#001f3f"; // Azul
   cor2 = "#01290d"; // Verde
-  cor3 = "#FF4136"; // Vermelho
+  cor3 = "#d42000"; // Vermelho
+  corCartaoAmarelo = "#e6b800"; // Amarelo
+  corCartaoVermelho = "#d42000"; // Vermelho
 
-  chartOptionsBar: {
+  chartOptionsBarGeral: {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    stroke: ApexStroke;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+    yaxis: ApexYAxis;
+    xaxis: ApexXAxis;
+    grid: ApexGrid;
+    colors: string[];
+    tooltip: ApexTooltip;
+    title: ApexTitleSubtitle;
+  };
+
+  chartOptionsBarChutes: {
     series: ApexAxisChartSeries;
     chart: ApexChart;
     stroke: ApexStroke;
@@ -54,7 +70,22 @@ export class InfoPartidaComponent implements OnInit {
     title: ApexTitleSubtitle;
   };
 
-  ChartOptionsBarGrouped : {
+  chartOptionsBarGroupedPasses : {
+    title: ApexTitleSubtitle;
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+    stroke: ApexStroke;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    colors: string[];
+    fill: ApexFill;
+    legend: ApexLegend;
+  };
+
+  chartOptionsBarGroupedCartoes : {
+    title: ApexTitleSubtitle;
     series: ApexAxisChartSeries;
     chart: ApexChart;
     dataLabels: ApexDataLabels;
@@ -73,6 +104,7 @@ export class InfoPartidaComponent implements OnInit {
 
   substituicoes: DetalhesPartida[] = [];
   cartoes: DetalhesPartida[] = [];
+  gols: DetalhesPartida[] = [];
 
 
   idPartida: string = '';
@@ -80,9 +112,86 @@ export class InfoPartidaComponent implements OnInit {
     private api: ApiService,
   ) {
 
-    this.chartOptionsBar = {
+    this.chartOptionsBarGeral = {
       title: {
-        text: "Chutes",
+        text: "Outros números:",
+        align: "center"
+      },
+      series: [
+        {
+          name: "Time A",
+          data: []
+        },
+        {
+          name: "Time B",
+          data: []
+        }
+      ],
+      chart: {
+        type: "bar",
+        height: 440,
+        stacked: true
+      },
+      colors: [this.cor1, this.cor2],
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: "50%",
+          borderRadius: 20,
+        },
+
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return String(Math.abs(Number(val)));
+        }
+      },
+      stroke: {
+        width: 1,
+        colors: ["#fff"]
+      },
+
+      grid: {
+        xaxis: {
+          lines: {
+            show: false
+          }
+        }
+      },
+      yaxis: {
+        min: -15,
+        max: 15,
+      },
+      tooltip: {
+        shared: false,
+        x: {
+          formatter: function(val) {
+            return val.toString();
+          }
+        },
+        y: {
+          formatter: function(val) {
+            return String(Math.abs(val));
+          }
+        }
+      },
+      xaxis: {
+        categories: [
+          "Escanteios", "Impedimentos", "Defesas do Goleiro",
+        ],
+        labels: {
+          show: false,
+          formatter: function(val) {
+            return String(Math.abs(Math.round(parseInt(val, 10))));
+          }
+        }
+      }
+    };
+
+    this.chartOptionsBarChutes = {
+      title: {
+        text: "Chutes:",
         align: "center"
       },
       series: [
@@ -153,9 +262,6 @@ export class InfoPartidaComponent implements OnInit {
           "Chutes dentro da Área",
           "Chutes fora da Área"
         ],
-        title: {
-          text: "Quantidade"
-        },
         labels: {
           show: false,
           formatter: function(val) {
@@ -166,53 +272,38 @@ export class InfoPartidaComponent implements OnInit {
     };
 
     this.chartOptionsDonut = {
-      title: { text: "Posse de Bola", align: "center" },
+      title: { text: "Posse de Bola:", align: "center" },
       series: [], // Dados de exemplo
       chart: { type: "donut", height: 300 },
       labels: ["Time A", "Time B"],
-      colors: [this.cor1, this.cor2],
+      colors: [this.cor2, this.cor1],
       tooltip: {
         y: { formatter: (val) => `${val}%` }
       }
     };
 
-    this.ChartOptionsBarGrouped = {
+    this.chartOptionsBarGroupedPasses = {
+      title: {
+        text: "Passes:",
+        align: "center",
+      },
       yaxis: {
-        title: {
-          text: "Values"
-        }
       },
       series: [
         {
-          name: "TimeA Passes certos",
+          name: "Passes certos",
           group: "budget",
-          data: [44000]
+          data: []
         },
         {
-          name: "TimeA passes errados",
+          name: "Passes errados",
           group: "budget",
-          data: [13000]
+          data: []
         },
         {
-          name: "TimeA total de passes",
+          name: "Total de passes",
           group: "totalA",
-          data: [48000]
-        },
-        {
-          name: "TimeB Passes certos",
-          group: "actual",
-          data: [48000]
-        },
-        {
-          name: "TimeB passes errados",
-          group: "actual",
-          data: [20000]
-        },
-
-        {
-          name: "TimeB total de passes",
-          group: "totalB",
-          data: [48000]
+          data: []
         },
       ],
       chart: {
@@ -235,14 +326,12 @@ export class InfoPartidaComponent implements OnInit {
         }
       },
       xaxis: {
-        categories: [
-          "TimeA",
-        ],
         labels: {
-          formatter: (val) => {
-            return (val);
+          formatter: (val, index) => {
+            return index === 0 || index === 1 ? val : '';
           }
-        }
+        },
+        categories: ['x', 'y'],
       },
       fill: {
         opacity: 1
@@ -253,14 +342,71 @@ export class InfoPartidaComponent implements OnInit {
         horizontalAlign: "left"
       }
     };
+
+    this.chartOptionsBarGroupedCartoes = {
+      title: {
+        text: "Cartões",
+        align: "center",
+      },
+      yaxis: {
+      },
+      series: [
+        {
+          name: "Cartões Amarelos",
+          group: "budget",
+          data: []
+        },
+        {
+          name: "Cartões Vermelhos",
+          group: "budget",
+          data: []
+        },
+        {
+          name: "Faltas",
+          group: "faults",
+          data: []
+        },
+      ],
+      chart: {
+        type: "bar",
+        height: 350,
+        stacked: true
+      },
+      stroke: {
+        width: 1,
+        colors: ["#fff"]
+      },
+      dataLabels: {
+        formatter: (val) => {
+          return String(val);
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      },
+      xaxis: {
+        labels: {
+          formatter: (val, index) => {
+            return index === 0 || index === 1 ? val : '';
+          }
+        },
+        categories: ['x', 'y'],
+      },
+      fill: {
+        opacity: 1
+      },
+      colors: [this.corCartaoAmarelo, this.corCartaoVermelho, this.cor1],
+      legend: {
+        position: "top",
+        horizontalAlign: "left"
+      }
+    };
   }
-
-
   ngOnInit(): void {
     this.pegarURL();
     this.atualizaDados();
-
-
   }
 
   // pegar idPartida que esta na url
@@ -270,6 +416,27 @@ export class InfoPartidaComponent implements OnInit {
     // console.log('idPartida:', this.idPartida);
   }
 
+  pegaEscudoTime(): any {
+    this.api.getEscudoTime(this.partida.timeA).subscribe(
+      (data) => {
+        let escudo = data;
+        this.partida.timeA_escudo = escudo.escudo;
+      },
+      (error) => {
+        console.error('Erro ao buscar escudo do time A:', error);
+      }
+    );
+    this.api.getEscudoTime(this.partida.timeB).subscribe(
+      (data) => {
+        let escudo = data;
+        this.partida.timeB_escudo = escudo.escudo;
+      },
+      (error) => {
+        console.error('Erro ao buscar escudo do time B:', error);
+      }
+    );
+  }
+
 
   atualizaDados(): void {
     this.api.getEstatisticas(this.idPartida).subscribe(
@@ -277,31 +444,29 @@ export class InfoPartidaComponent implements OnInit {
         if (data && data[0]) {
           this.estatisticas = data[0];
 
-          this.chartOptionsDonut.labels = [this.estatisticas.timeA_nome, this.estatisticas.timeB_nome];
-          this.chartOptionsDonut.series = [parseInt(this.estatisticas.posseBolaA), parseInt(this.estatisticas.posseBolaB)];
-          this.chartOptionsDonut.title.text = `Posse de Bola: ${this.estatisticas.posseBolaA}% x ${this.estatisticas.posseBolaB}%`;
-
-          this.chartOptionsBar.series = [
+          this.chartOptionsDonut.labels = [this.estatisticas.timeB_nome, this.estatisticas.timeA_nome];
+          this.chartOptionsDonut.series = [parseInt(this.estatisticas.posseBolaB), parseInt(this.estatisticas.posseBolaA)];
+          this.chartOptionsBarChutes.series = [
             {
               name: this.estatisticas.timeA_nome,
               data: [
-                this.estatisticas.totalChutesA,
-                this.estatisticas.chutesGolA,
-                this.estatisticas.chutesBloqA,
-                this.estatisticas.chutesForaA,
-                this.estatisticas.chutesDentroAreaA,
-                this.estatisticas.chutesForaAreaA
+                -this.estatisticas.totalChutesA,
+                -this.estatisticas.chutesGolA,
+                -this.estatisticas.chutesBloqA,
+                -this.estatisticas.chutesForaA,
+                -this.estatisticas.chutesDentroAreaA,
+                -this.estatisticas.chutesForaAreaA
               ]
             },
             {
               name: this.estatisticas.timeB_nome,
               data: [
-                -this.estatisticas.totalChutesB,
-                -this.estatisticas.chutesGolB,
-                -this.estatisticas.chutesBloqB,
-                -this.estatisticas.chutesForaB,
-                -this.estatisticas.chutesDentroAreaB,
-                -this.estatisticas.chutesForaAreaB
+                this.estatisticas.totalChutesB,
+                this.estatisticas.chutesGolB,
+                this.estatisticas.chutesBloqB,
+                this.estatisticas.chutesForaB,
+                this.estatisticas.chutesDentroAreaB,
+                this.estatisticas.chutesForaAreaB
               ]
             }
           ];
@@ -309,13 +474,34 @@ export class InfoPartidaComponent implements OnInit {
           let passesErradosA = this.estatisticas.totalPassesA - this.estatisticas.passesCertosA;
           let passesErradosB = this.estatisticas.totalPassesB - this.estatisticas.passesCertosB;
 
-          this.ChartOptionsBarGrouped.series[0].data = [this.estatisticas.passesCertosA];
-          this.ChartOptionsBarGrouped.series[1].data = [passesErradosA];
-          this.ChartOptionsBarGrouped.series[2].data = [this.estatisticas.totalPassesA];
-          this.ChartOptionsBarGrouped.series[3].data = [this.estatisticas.passesCertosB];
-          this.ChartOptionsBarGrouped.series[4].data = [passesErradosB];
-          this.ChartOptionsBarGrouped.series[5].data = [this.estatisticas.totalPassesB];
+          this.chartOptionsBarGroupedPasses.xaxis.categories = [this.estatisticas.timeA_nome, this.estatisticas.timeB_nome];
+          this.chartOptionsBarGroupedPasses.series[0].data = [this.estatisticas.passesCertosA, this.estatisticas.passesCertosB];
+          this.chartOptionsBarGroupedPasses.series[1].data = [passesErradosA, passesErradosB];
+          this.chartOptionsBarGroupedPasses.series[2].data = [this.estatisticas.totalPassesA, this.estatisticas.totalPassesB];
 
+          this.chartOptionsBarGroupedCartoes.xaxis.categories = [this.estatisticas.timeA_nome, this.estatisticas.timeB_nome];
+          this.chartOptionsBarGroupedCartoes.series[0].data = [this.estatisticas.cAmarelosA, this.estatisticas.cAmarelosB];
+          this.chartOptionsBarGroupedCartoes.series[1].data = [this.estatisticas.cVermelhosA, this.estatisticas.cVermelhosB];
+          this.chartOptionsBarGroupedCartoes.series[2].data = [this.estatisticas.faltasA, this.estatisticas.faltasB];
+
+          this.chartOptionsBarGeral.series = [
+            {
+              name: this.estatisticas.timeA_nome,
+              data: [
+                -this.estatisticas.escanteiosA,
+                -this.estatisticas.impedimentosA,
+                -this.estatisticas.defesasGoleiroA,
+              ]
+            },
+            {
+              name: this.estatisticas.timeB_nome,
+              data: [
+                this.estatisticas.escanteiosB,
+                this.estatisticas.impedimentosB,
+                this.estatisticas.defesasGoleiroB,
+              ]
+            }
+          ];
         }
       },
       (error) => {
@@ -328,7 +514,8 @@ export class InfoPartidaComponent implements OnInit {
         this.partida = data[0];
         this.partida = this.api.tratarHorario(this.partida);
         this.partida.rodada = this.api.filtraRodada(this.partida.rodada);
-        // console.log(this.partida); // Aqui está tudo ok
+        this.pegaEscudoTime();
+        console.log(this.partida); // Aqui está tudo ok
       },
       (error) => {
         // console.error('Erro ao buscar partida:', error);
@@ -341,11 +528,33 @@ export class InfoPartidaComponent implements OnInit {
         // console.log('Detalhes da partida:', this.detalhesPartida);
         this.tratarDetalhes();
         this.separarDetalhes();
+
+        this.detalhesPartida.forEach(detalhe => {
+            this.api.getJogadoresTime(detalhe.idJogador1).subscribe(
+              (data) => {
+                detalhe.nomeJogador1 = data[0].nome;
+              },
+              (error) => {
+                console.error('Erro ao buscar jogadores:', error);
+              }
+            );
+            if (detalhe.idJogador2) {
+              this.api.getJogadoresTime(detalhe.idJogador2).subscribe(
+                (data) => {
+                  detalhe.nomeJogador2 = data[0].nome;
+                },
+                (error) => {
+                  console.error('Erro ao buscar jogadores:', error);
+                }
+              );
+            }
+        });
       },
       (error) => {
         // console.error('Erro ao buscar detalhes da partida:', error);
       }
     );
+
   }
 
   tratarDetalhes() {
@@ -404,13 +613,23 @@ export class InfoPartidaComponent implements OnInit {
   }
 
   separarDetalhes() {
-    this.cartoes = this.detalhesPartida.filter(detalhe =>
+      this.cartoes = this.detalhesPartida.filter(detalhe =>
       detalhe.detalheEv === 'Cartão Amarelo' || detalhe.detalheEv === 'Cartão Vermelho'
     );
 
     this.substituicoes = this.detalhesPartida.filter(detalhe =>
       detalhe.detalheEv.startsWith('Substituição') // Verifica se começa com 'Substituição'
     );
+
+    this.gols = this.detalhesPartida.filter(detalhe =>
+      detalhe.evento === 'Gol'
+    );
+
+    console.log(this.gols);
+  }
+
+  tiraSubst(palavra: string): string {
+    return palavra.split(' ')[1];
   }
 
 }

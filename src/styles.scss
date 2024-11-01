@@ -8,6 +8,9 @@
   --azulEscuro: #001f3f;
   --vermelhoEscuro: #3f0000;
 
+  --cartaoAmarelo: #e6b800;
+  --cartaoVermelho: #d42000;
+
   --g1: #2b39ff;
   --g2: #ff4a2b;
 
@@ -39,6 +42,16 @@ body {
   border-radius: 8px;
   padding: 10px;
   background-color: var(--branco);
+}
+
+.menor {
+  width: 50%;
+  margin-left: 25%;
+}
+
+.maior {
+  width: 90%;
+  margin-left: 5%;
 }
 
 h2 {
@@ -100,6 +113,17 @@ mat-card-title {
   align-items: center;
 }
 
+.alinharCartao {
+  display: flex;
+  justify-content: left;
+  align-items: start;
+}
+
+.alinharSubst {
+  display: flex;
+  justify-content: left;
+  align-items: start;
+}
 
 table {
   width: 100%; /* Para garantir que a tabela ocupe todo o espaço disponível */
@@ -207,6 +231,8 @@ h4 {
 }
 
 .col {
+  display: flex;
+  align-items: center;
   flex: 1; /* Permite que cada coluna ocupe o mesmo espaço */
   padding: 8px;
   border-bottom: 1px solid #ddd; /* Linha entre as entradas */
@@ -225,30 +251,60 @@ h4 {
   width: 30%;
 }
 
-.chart-container {
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px; /* Ajuste o espaçamento entre as colunas conforme necessário */
+}
+
+.cartaoAmarelo {
+  width: 15px;
+  height: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: var(--cartaoAmarelo);
+}
+
+.cartaoVermelho {
+  width: 15px;
+  height: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: var(--cartaoVermelho);
+}
+
+.seta {
+  font-size: 16px;
+  margin: -12px -10px;
+}
+
+.textoVermelho {
+  color: var(--cartaoVermelho);
+}
+
+.textoAzul {
+  color: var(--g1);
+}
+
+.gap {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.escudoMini {
+  width: 30px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.divEscudoMini {
   display: flex;
-  flex-direction: column; /* Altere para 'row' para disposição lado a lado */
-  gap: 20px; /* Espaçamento entre os gráficos */
-}
+  justify-content: center;
+  align-items: center;
 
-.chart-item {
-  flex: 1; /* Para expandir os gráficos para ocupar o espaço disponível */
-}
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+  margin-left: 10px;
 
-.juntaGraficos {
-  display: flex;
-  justify-content: space-between;
-}
-
-.grafico {
-  flex: 1;
-  justify-content: space-between;
-}
-
-.g1{
-  margin-right: -4px;
-}
-
-.g2{
-  margin-left: -4px;
 }
