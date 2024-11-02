@@ -1,0 +1,33 @@
+{
+    "get":"teams",
+    "parameters":{
+        "id":"127"
+        },
+        "errors":[],
+        "results":1,
+        "paging":{
+            "current":1,
+            "total":1},
+            "response":[
+                {
+                    "team":{
+                        "id":127,
+                        "name":"Flamengo",
+                        "code":"FLA",
+                        "country":"Brazil",
+                        "founded":1895,
+                        "national":false,
+                        "logo":"https:\/\/media.api-sports.io\/football\/teams\/127.png"
+                        },
+                        "venue":{
+                            "id":204,
+                            "name":"Estadio Jornalista M\u00e1rio Filho (Maracan\u00e3)",
+                            "address":"Rua Professor Eurico Rabelo, Maracan\u00e3",
+                            "city":"Rio de Janeiro, Rio de Janeiro",
+                            "capacity":78838,
+                            "surface":"grass",
+                            "image":"https:\/\/media.api-sports.io\/football\/venues\/204.png"
+                            }
+                }
+            ]
+}
