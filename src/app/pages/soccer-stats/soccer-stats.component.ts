@@ -19,7 +19,7 @@ export class SoccerStatsComponent {
   ) { }
 
   partidas: Partida[] = [];
-  rodadaEscolhida = '33'
+  rodadaEscolhida = '34'
 
   times: Time[] = [];
   timesTabela: Time[] = [];
@@ -27,14 +27,20 @@ export class SoccerStatsComponent {
   displayedColumns: string[] = ['posicao', 'nome', 'pontos', 'nJogos', 'nVitorias', 'nEmpates', 'nDerrotas', 'nGols'];
 
   async ngOnInit(): Promise<void> {
-    // this.api.atualizaPartidas();
     await this.atualizaDados();
   }
 
   atualizaP(): void {
-    this.api.atualizaPartidas();
+    this.api.atualizaPartidas().subscribe(
+      (response) => {
+        console.log('Partidas atualizadas com sucesso:', response);
+        location.reload();
+      },
+      (error) => {
+        console.error('Erro ao atualizar partidas:', error);
+      }
+    );
   }
-
   pegaEscudoTime(partida: Partida): any {
     this.api.getEscudoTime(partida.timeA).subscribe(
       (data) => {
@@ -70,7 +76,9 @@ export class SoccerStatsComponent {
         this.pegaEscudoTime(partida);
       });
 
-      this.api.quickSortPartidas(this.partidas, 0, this.partidas.length - 1);
+      this.partidas = this.api.sortPartidas(this.partidas);
+
+
 
     });
 
@@ -79,7 +87,7 @@ export class SoccerStatsComponent {
         return;
       }
       this.times = data;
-      this.api.quickSortTimes(this.times, 0, this.times.length - 1);
+      this.api.sortTimes(this.times);
     });
   }
 
