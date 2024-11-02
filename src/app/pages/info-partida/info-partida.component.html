@@ -63,15 +63,16 @@
 					class="body">
 					<div class="col">
 						<div class="alinhar">
-							<div>{{detalhe.hora}} -</div>
-							<div class="divEscudoMini">
-								<img *ngIf="detalhe.idTime == partida.timeA"
-									[src]="partida.timeA_escudo"
-									class="escudoMini">
+              <div class="divEscudoMini">
+                <img *ngIf="detalhe.idTime == partida.timeA"
+                [src]="partida.timeA_escudo"
+                class="escudoMini">
 								<img *ngIf="detalhe.idTime == partida.timeB"
-									[src]="partida.timeB_escudo"
-									class="escudoMini">
+                [src]="partida.timeB_escudo"
+                class="escudoMini">
 							</div>
+              <div>{{detalhe.hora}}'</div>
+              <div class="gap"></div>
 							<div>
 								{{ detalhe.nomeJogador1 }}
 							</div>
@@ -93,15 +94,16 @@
 					class="body">
 					<div class="col">
 						<div class="alinharSubst">
-              <div>{{detalhe.hora}} -</div>
-							<div class="divEscudoMini">
-								<img *ngIf="detalhe.idTime == partida.timeA"
-									[src]="partida.timeA_escudo"
-									class="escudoMini">
+              <div class="divEscudoMini">
+                <img *ngIf="detalhe.idTime == partida.timeA"
+                [src]="partida.timeA_escudo"
+                class="escudoMini">
 								<img *ngIf="detalhe.idTime == partida.timeB"
-									[src]="partida.timeB_escudo"
-									class="escudoMini">
+                [src]="partida.timeB_escudo"
+                class="escudoMini">
 							</div>
+              <div>{{detalhe.hora}}'</div>
+              <div class="gap"></div>
 							<div>
 								{{tiraSubst(detalhe.detalheEv)}}.
 							</div>
@@ -143,7 +145,8 @@
 									[src]="partida.timeB_escudo"
 									class="escudoMini">
 							</div>
-							<!-- <div *ngIf="detalhe.hora != '00:00'">{{detalhe.hora}} -</div> -->
+							<div>{{detalhe.hora}}'</div>
+              <div class="gap"></div>
 							<div class="cartaoAmarelo"></div>
 							<div>
 								{{ detalhe.nomeJogador1 }}
@@ -161,6 +164,8 @@
 									[src]="partida.timeB_escudo"
 									class="escudoMini">
 							</div>
+              <div>{{detalhe.hora}}' </div>
+              <div class="gap"></div>
 							<div class="cartaoVermelho"></div>
 							<div>
 								{{ detalhe.nomeJogador1 }}
