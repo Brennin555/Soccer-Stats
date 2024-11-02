@@ -569,7 +569,7 @@ export class InfoPartidaComponent implements OnInit {
         // console.warn('Hora está undefined para este detalhe:', detalhe);
         return; // Saia se a hora for undefined
       }
-
+      detalhe.hora = String(Number(detalhe.hora) - 3);
       detalhe.hora = detalhe.hora.split(":")[1] + ":" + detalhe.hora.split(":")[2];
 
       const detalheBase = detalhe.detalheEv ? detalhe.detalheEv.replace(/\d+/g, '').trim() : '';

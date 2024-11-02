@@ -3,7 +3,7 @@
 :root{
   --corFundo: #01290d;
   --corCard: #e3dbf7;
-  --branco: #fff;
+  --branco: #ffffffc9;
   --preto: #000;
   --azulEscuro: #001f3f;
   --vermelhoEscuro: #3f0000;
@@ -49,6 +49,11 @@ body {
   margin-left: 25%;
 }
 
+.menor2 {
+  width: 20%;
+  margin-left: 40%;
+}
+
 .maior {
   width: 90%;
   margin-left: 5%;
@@ -80,7 +85,7 @@ mat-card-title {
 
 .partida {
   background-color: var(--branco);
-  width: 340px;
+  width: 370px;
   justify-content: center;
   align-items: center;
   margin: 0 auto;

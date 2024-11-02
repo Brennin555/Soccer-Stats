@@ -65,13 +65,33 @@ getEscudoTime(idTime: string): Observable<any> {
   return this.http.get<any>(this.apiUrl + '?escudo=true&idTime=' + idTime);
 }
 
-  tratarHorario(partida: Partida) {
-    const data = new Date(partida.horario);
-    partida.dia = data.toLocaleDateString();
-    partida.horario = data.toLocaleTimeString().split(":")[0] + "h" + data.toLocaleTimeString().split(":")[1];
+getPartidasDia(dia: string): Observable<any> {
+  return this.http.get<any>(this.apiUrl + '?partidasdia=' + dia);
+}
 
-    return partida;
+atualizaPartidasDia(dia: string){
+  console.log('Atualizando partidas do dia...');
+  // abrir link em uma nova janela
+  window.open(this.apiUrlPartidas + '?dia=' + dia, '_blank');
+}
+
+tratarHorario(partida: Partida) {
+  const data = new Date(partida.horario);
+  partida.dia = data.toLocaleDateString();
+
+  let horas = data.getHours();
+  let minutos = data.getMinutes();
+
+  let correcaoHorario = horas - 3;
+  if(horas < 3){
+    partida.dia = new Date(data.setDate(data.getDate() - 1)).toLocaleDateString();
+    correcaoHorario = 24 + correcaoHorario;
   }
+
+  partida.horario = correcaoHorario.toString().padStart(2, '0') + "h" + minutos.toString().padStart(2, '0');
+
+  return partida;
+}
 
   filtraRodada(rodada: string): string {
       rodada = rodada.split("-")[1];
@@ -105,6 +125,70 @@ getEscudoTime(idTime: string): Observable<any> {
     const aux = times[i + 1];
     times[i + 1] = times[fim];
     times[fim] = aux;
+    return i + 1;
+  }
+
+  quickSortPartidas(partidas: any[], inicio: number, fim: number): void {
+    if (partidas.length === 0) {
+      console.error("A lista de partidas está vazia.");
+      return;
+    }
+
+    if (inicio < fim) {
+      const p = this.particaoPartidasPorDia(partidas, inicio, fim);
+      this.quickSortPartidas(partidas, inicio, p - 1);
+      this.quickSortPartidas(partidas, p + 1, fim);
+
+      // Ordenar as partidas do mesmo dia por horário
+      let diaInicio = inicio;
+      for (let i = inicio + 1; i <= fim; i++) {
+        if (i === fim || partidas[i].dia !== partidas[diaInicio].dia) {
+          this.quickSortPartidasPorHorario(partidas, diaInicio, i - 1);
+          diaInicio = i;
+        }
+      }
+    }
+  }
+
+  particaoPartidasPorDia(partidas: any[], inicio: number, fim: number): number {
+    const pivo = partidas[fim].dia;
+    let i = inicio - 1;
+    for (let j = inicio; j < fim; j++) {
+      if (partidas[j].dia < pivo) {
+        i++;
+        const aux = partidas[i];
+        partidas[i] = partidas[j];
+        partidas[j] = aux;
+      }
+    }
+    const aux = partidas[i + 1];
+    partidas[i + 1] = partidas[fim];
+    partidas[fim] = aux;
+    return i + 1;
+  }
+
+  quickSortPartidasPorHorario(partidas: any[], inicio: number, fim: number): void {
+    if (inicio < fim) {
+      const p = this.particaoPartidasPorHorario(partidas, inicio, fim);
+      this.quickSortPartidasPorHorario(partidas, inicio, p - 1);
+      this.quickSortPartidasPorHorario(partidas, p + 1, fim);
+    }
+  }
+
+  particaoPartidasPorHorario(partidas: any[], inicio: number, fim: number): number {
+    const pivo = partidas[fim].horario;
+    let i = inicio - 1;
+    for (let j = inicio; j < fim; j++) {
+      if (partidas[j].horario < pivo) {
+        i++;
+        const aux = partidas[i];
+        partidas[i] = partidas[j];
+        partidas[j] = aux;
+      }
+    }
+    const aux = partidas[i + 1];
+    partidas[i + 1] = partidas[fim];
+    partidas[fim] = aux;
     return i + 1;
   }
 

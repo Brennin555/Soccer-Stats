@@ -10,6 +10,7 @@
 			<img [src]="partida.timeA_escudo"
 				class="escudo">
 		</div>
+    <div class="gap"></div>
 		<div>
 			<h3 class="info">
 				Rodada {{ partida.rodada }}
@@ -36,6 +37,7 @@
 				<h3 class="info-value">{{ partida.juiz }}</h3>
 			</div>
 		</div>
+    <div class="gap"></div>
 		<div>
 			<img [src]="partida.timeB_escudo"
 				class="escudo">
@@ -44,8 +46,8 @@
 
 	<div class="espacamento"></div>
 
-	<!-- para via de testes -->
-	<div class="card maior dados">
+
+	<div class="card menor2 dados">
 		<h2>Estatísticas:</h2>
 	</div>
 
@@ -61,7 +63,7 @@
 					class="body">
 					<div class="col">
 						<div class="alinhar">
-							<!-- <div *ngIf="detalhe.hora != '00:00'">{{detalhe.hora}} -</div> -->
+							<div>{{detalhe.hora}} -</div>
 							<div class="divEscudoMini">
 								<img *ngIf="detalhe.idTime == partida.timeA"
 									[src]="partida.timeA_escudo"
@@ -80,15 +82,6 @@
 
 						</div>
 					</div>
-					<div *ngIf="detalhe.detalheEv == 'Cartão Vermelho'"
-						class="col">
-						<div class="alinhar">
-							<div class="cartaoVermelho"></div>
-							<div>
-								{{ detalhe.nomeJogador1 }}
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 
@@ -100,6 +93,7 @@
 					class="body">
 					<div class="col">
 						<div class="alinharSubst">
+              <div>{{detalhe.hora}} -</div>
 							<div class="divEscudoMini">
 								<img *ngIf="detalhe.idTime == partida.timeA"
 									[src]="partida.timeA_escudo"
@@ -159,6 +153,14 @@
 					<div *ngIf="detalhe.detalheEv == 'Cartão Vermelho'"
 						class="col">
 						<div class="alinhar">
+              <div class="divEscudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeA"
+									[src]="partida.timeA_escudo"
+									class="escudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeB"
+									[src]="partida.timeB_escudo"
+									class="escudoMini">
+							</div>
 							<div class="cartaoVermelho"></div>
 							<div>
 								{{ detalhe.nomeJogador1 }}

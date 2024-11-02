@@ -69,11 +69,13 @@ export class SoccerStatsComponent {
         partida.rodada = this.api.filtraRodada(partida.rodada);
         this.pegaEscudoTime(partida);
       });
+
+      this.api.quickSortPartidas(this.partidas, 0, this.partidas.length - 1);
+
     });
 
     this.api.getTimes().subscribe((data: any) => {
       if (this.partidas.length === 0) {
-        console.error('A lista de partidas está vazia.');
         return;
       }
       this.times = data;
