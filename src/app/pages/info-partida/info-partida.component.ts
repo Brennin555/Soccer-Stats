@@ -70,7 +70,7 @@ export class InfoPartidaComponent implements OnInit {
     title: ApexTitleSubtitle;
   };
 
-  chartOptionsBarGroupedPasses : {
+  chartOptionsBarGroupedPasses: {
     title: ApexTitleSubtitle;
     series: ApexAxisChartSeries;
     chart: ApexChart;
@@ -84,7 +84,7 @@ export class InfoPartidaComponent implements OnInit {
     legend: ApexLegend;
   };
 
-  chartOptionsBarGroupedCartoes : {
+  chartOptionsBarGroupedCartoes: {
     title: ApexTitleSubtitle;
     series: ApexAxisChartSeries;
     chart: ApexChart;
@@ -105,6 +105,7 @@ export class InfoPartidaComponent implements OnInit {
   substituicoes: DetalhesPartida[] = [];
   cartoes: DetalhesPartida[] = [];
   gols: DetalhesPartida[] = [];
+  vars: DetalhesPartida[] = [];
 
 
   idPartida: string = '';
@@ -143,7 +144,7 @@ export class InfoPartidaComponent implements OnInit {
       },
       dataLabels: {
         enabled: true,
-        formatter: function(val) {
+        formatter: function (val) {
           return String(Math.abs(Number(val)));
         }
       },
@@ -166,12 +167,12 @@ export class InfoPartidaComponent implements OnInit {
       tooltip: {
         shared: false,
         x: {
-          formatter: function(val) {
+          formatter: function (val) {
             return val.toString();
           }
         },
         y: {
-          formatter: function(val) {
+          formatter: function (val) {
             return String(Math.abs(val));
           }
         }
@@ -182,7 +183,7 @@ export class InfoPartidaComponent implements OnInit {
         ],
         labels: {
           show: false,
-          formatter: function(val) {
+          formatter: function (val) {
             return String(Math.abs(Math.round(parseInt(val, 10))));
           }
         }
@@ -220,7 +221,7 @@ export class InfoPartidaComponent implements OnInit {
       },
       dataLabels: {
         enabled: true,
-        formatter: function(val) {
+        formatter: function (val) {
           return String(Math.abs(Number(val)));
         }
       },
@@ -243,12 +244,12 @@ export class InfoPartidaComponent implements OnInit {
       tooltip: {
         shared: false,
         x: {
-          formatter: function(val) {
+          formatter: function (val) {
             return val.toString();
           }
         },
         y: {
-          formatter: function(val) {
+          formatter: function (val) {
             return String(Math.abs(val));
           }
         }
@@ -264,7 +265,7 @@ export class InfoPartidaComponent implements OnInit {
         ],
         labels: {
           show: false,
-          formatter: function(val) {
+          formatter: function (val) {
             return String(Math.abs(Math.round(parseInt(val, 10))));
           }
         }
@@ -409,6 +410,10 @@ export class InfoPartidaComponent implements OnInit {
     this.atualizaDados();
   }
 
+  voltaMenu(): void {
+    window.history.back();
+  }
+
   // pegar idPartida que esta na url
   pegarURL(): void {
     let url = window.location.href;
@@ -515,7 +520,7 @@ export class InfoPartidaComponent implements OnInit {
         this.partida = this.api.tratarHorario(this.partida);
         this.partida.rodada = this.api.filtraRodada(this.partida.rodada);
         this.pegaEscudoTime();
-        console.log(this.partida); // Aqui está tudo ok
+        // console.log(this.partida); // Aqui está tudo ok
       },
       (error) => {
         // console.error('Erro ao buscar partida:', error);
@@ -525,29 +530,34 @@ export class InfoPartidaComponent implements OnInit {
     this.api.getDetalhesPartida(this.idPartida).subscribe(
       (data) => {
         this.detalhesPartida = data;
-        // console.log('Detalhes da partida:', this.detalhesPartida);
+
+        this.detalhesPartida.forEach(detalhe => {
+          console.log(detalhe.evento + " - " + detalhe.detalheEv);
+        });
+
+
         this.tratarDetalhes();
         this.separarDetalhes();
 
         this.detalhesPartida.forEach(detalhe => {
-            this.api.getJogadoresTime(detalhe.idJogador1).subscribe(
+          this.api.getJogadoresTime(detalhe.idJogador1).subscribe(
+            (data) => {
+              detalhe.nomeJogador1 = data[0].nome;
+            },
+            (error) => {
+              console.error('Erro ao buscar jogadores:', error);
+            }
+          );
+          if (detalhe.idJogador2) {
+            this.api.getJogadoresTime(detalhe.idJogador2).subscribe(
               (data) => {
-                detalhe.nomeJogador1 = data[0].nome;
+                detalhe.nomeJogador2 = data[0].nome;
               },
               (error) => {
                 console.error('Erro ao buscar jogadores:', error);
               }
             );
-            if (detalhe.idJogador2) {
-              this.api.getJogadoresTime(detalhe.idJogador2).subscribe(
-                (data) => {
-                  detalhe.nomeJogador2 = data[0].nome;
-                },
-                (error) => {
-                  console.error('Erro ao buscar jogadores:', error);
-                }
-              );
-            }
+          }
         });
       },
       (error) => {
@@ -586,12 +596,32 @@ export class InfoPartidaComponent implements OnInit {
         case 'Goal':
           detalhe.detalheEv = 'Gol';
           break;
+        case 'Goal confirmed':
+          detalhe.detalheEv = 'Gol Confirmado';
+          break;
+        case 'Goal cancelled':
+          detalhe.detalheEv = 'Gol Cancelado';
+          break;
+        case 'Penalty awarded':
+          detalhe.detalheEv = 'Pênalti marcado';
+          break;
+        case 'Penalty cancelled':
+          detalhe.detalheEv = 'Pênalti cancelado';
+          break;
+        case 'Card reviewed':
+          detalhe.detalheEv = 'Cartão revisado';
+          break;
+        case 'Card Upgrade':
+          detalhe.detalheEv = 'Cartão Atualizado';
+          break;
         default:
           detalhe.detalheEv = "Detalhe de Evento não encontrado no tratamento";
       }
 
       if (restante != '' && restante != 'Card') {
+        if(detalhe.evento != 'Var'){
         detalhe.detalheEv = detalhe.detalheEv + ' ' + restante;
+        }
       }
 
       switch (detalhe.evento) {
@@ -604,14 +634,48 @@ export class InfoPartidaComponent implements OnInit {
         case 'Goal':
           detalhe.evento = 'Gol';
           break;
+        case 'Var':
+          detalhe.evento = 'VAR';
+          break;
         default:
           detalhe.evento = "Evento não encontrado no tratamento";
       }
+
+      if (detalhe.comentario != null) {
+        switch (detalhe.comentario) {
+          case 'Foul':
+            detalhe.comentario = 'Falta';
+            break;
+          case 'Handball':
+            detalhe.comentario = 'Mão na bola';
+            break;
+          case 'Argument':
+            detalhe.comentario = 'Discussão';
+            break;
+          case 'Persistent fouling':
+            detalhe.comentario = 'Falta persistente';
+            break;
+          case 'Off the ball foul':
+            detalhe.comentario = 'Falta fora da bola';
+            break;
+          case 'Time wasting':
+            detalhe.comentario = 'Perda de tempo';
+            break;
+          case 'Professional foul last man':
+            detalhe.comentario = 'Falta profissional';
+            break;
+          case 'Tripping':
+            detalhe.comentario = 'Tropeço';
+            break;
+        }
+      }
+
+
     });
   }
 
   separarDetalhes() {
-      this.cartoes = this.detalhesPartida.filter(detalhe =>
+    this.cartoes = this.detalhesPartida.filter(detalhe =>
       detalhe.detalheEv === 'Cartão Amarelo' || detalhe.detalheEv === 'Cartão Vermelho'
     );
 
@@ -623,7 +687,11 @@ export class InfoPartidaComponent implements OnInit {
       detalhe.evento === 'Gol'
     );
 
-    console.log(this.gols);
+    this.vars = this.detalhesPartida.filter(detalhe =>
+      detalhe.evento === 'VAR'
+    );
+
+    // console.log(this.gols);
   }
 
   tiraSubst(palavra: string): string {

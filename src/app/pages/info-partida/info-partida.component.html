@@ -1,7 +1,15 @@
-<button (click)="atualizaDados()"
+<!-- <button (click)="atualizaDados()"
 	mat-raised-button
 	color="primary">
 	Buscar Dados
+</button> -->
+
+<button (click)="voltaMenu()"
+	mat-raised-button
+	color="primary">
+	<mat-icon>
+    arrow_back
+  </mat-icon>
 </button>
 
 <div class="cards-container">
@@ -84,6 +92,34 @@
 						</div>
 					</div>
 				</div>
+        <div class="header">
+					<div class="col">VAR</div>
+				</div>
+				<div *ngFor="let detalhe of vars"
+					class="body">
+					<div class="col">
+						<div class="alinhar">
+              <div class="divEscudoMini">
+                <img *ngIf="detalhe.idTime == partida.timeA"
+                [src]="partida.timeA_escudo"
+                class="escudoMini">
+								<img *ngIf="detalhe.idTime == partida.timeB"
+                [src]="partida.timeB_escudo"
+                class="escudoMini">
+							</div>
+              <div>{{detalhe.hora}}'</div>
+              <div class="gap"></div>
+							<div>
+								{{ detalhe.nomeJogador1 }}
+							</div>
+							<div class="gap"></div>
+							<div *ngIf="detalhe.detalheEv">
+								({{ detalhe.detalheEv }})
+							</div>
+
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="card maior dados">
@@ -148,9 +184,9 @@
 							<div>{{detalhe.hora}}'</div>
               <div class="gap"></div>
 							<div class="cartaoAmarelo"></div>
-							<div>
-								{{ detalhe.nomeJogador1 }}
-							</div>
+							<div>{{ detalhe.nomeJogador1 }}</div>
+              <div class="gap"></div>
+              <div *ngIf="detalhe.comentario!=null"> ({{detalhe.comentario}})</div>
 						</div>
 					</div>
 					<div *ngIf="detalhe.detalheEv == 'Cartão Vermelho'"
@@ -167,9 +203,9 @@
               <div>{{detalhe.hora}}' </div>
               <div class="gap"></div>
 							<div class="cartaoVermelho"></div>
-							<div>
-								{{ detalhe.nomeJogador1 }}
-							</div>
+							<div>{{ detalhe.nomeJogador1 }}</div>
+              <div class="gap"></div>
+              <div *ngIf="detalhe.comentario!=null"> ({{detalhe.comentario}})</div>
 						</div>
 					</div>
 				</div>
