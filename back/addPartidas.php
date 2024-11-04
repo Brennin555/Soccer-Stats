@@ -1,12 +1,53 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-$date="2022-10-17";
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+$date = date("Y-m-d");
+$date = substr_replace($date, "2022", 0, 4);
+
+$date = date('Y-m-d', strtotime($date . ' +1 day'));
+
+$date="2022-11-07";
 $season=substr($date, 0, 4);
+$lastDate = "";
 
+// Conectar ao banco de dados
+$host = "localhost";
+$db = "soccer-stats-db";
+$user = "root";
+$pass = ""; 
+
+try {
+    // Tenta conectar ao banco de dados
+    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Obtém a chave API da tabela configuracoes
+    $sql = "SELECT apiKey, ultimo_dia_verificado FROM configuracoes LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $config = $stmt->fetch(PDO::FETCH_ASSOC);
+    $apiKey = $config['apiKey'];
+    $lastDate = $config['ultimo_dia_verificado'];
+
+} catch (PDOException $e) {
+    //echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+    exit;
+}
+
+$lastDate = "2022-07-30"; //data teste
+
+// Inicializa a requisição cURL para obter os fixtures (partidas) no período especificado
 $curl = curl_init();
-
 curl_setopt_array($curl, array(
-    CURLOPT_URL =>  "https://v3.football.api-sports.io/fixtures?league=71&season=$season&date=$date",
+    CURLOPT_URL => "https://v3.football.api-sports.io/fixtures?league=71&season=$season&from=$lastDate&to=$date",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -15,7 +56,7 @@ curl_setopt_array($curl, array(
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => array(
-        'x-rapidapi-key: 339925210cc657b54c360219edf39de5',
+        'x-rapidapi-key: ' . $apiKey,
         'x-rapidapi-host: v3.football.api-sports.io'
     ),
 ));
@@ -25,7 +66,7 @@ curl_close($curl);
 
 // Verifique se a resposta foi bem-sucedida
 if ($response === false) {
-    echo "Erro na requisição: " . curl_error($curl);
+    //echo "Erro na requisição: " . curl_error($curl);
     exit;
 }
 
@@ -34,38 +75,32 @@ $data = json_decode($response, true);
 
 // Verifique se a resposta contém dados
 if (!isset($data['response']) || empty($data['response'])) {
-    echo "Nenhuma partida encontrada.";
+    //echo "Nenhuma partida encontrada.";
     exit;
 }
-
-// Conectar ao banco de dados
-$host = "localhost"; // Defina seu host
-$db = "soccer-stats-db"; // Defina o nome da sua base de dados
-$user = "root"; // Defina seu usuário
-$pass = ""; // Defina sua senha
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Função para garantir que o time está inserido no banco de dados
+    // Função p garantir que o time está no bd
     function inserirTimeSeNaoExistir($pdo, $teamId, $teamName) {
-        // Verifica se o time já existe
+        // Verifica se o time existe
         $sqlVerificaTime = "SELECT id FROM time WHERE id = :id";
         $stmtVerificaTime = $pdo->prepare($sqlVerificaTime);
         $stmtVerificaTime->bindParam(':id', $teamId);
         $stmtVerificaTime->execute();
 
+        // Se o time não existir
         if ($stmtVerificaTime->rowCount() == 0) {
-            // Se o time não existir, insira-o
             $sqlInserirTime = "INSERT INTO time (id, nome) VALUES (:id, :nome)";
             $stmtInserirTime = $pdo->prepare($sqlInserirTime);
             $stmtInserirTime->bindParam(':id', $teamId);
             $stmtInserirTime->bindParam(':nome', $teamName);
             $stmtInserirTime->execute();
-            echo "Time inserido: $teamName<br>";
+            //echo "Time inserido: $teamName<br>";
         } else {
-            echo "Time já existente: $teamName<br>";
+            //echo "Time já existente: $teamName<br>";
         }
     }
 
@@ -76,7 +111,6 @@ try {
         $timeBId = $matchData['teams']['away']['id'];
         $timeBName = $matchData['teams']['away']['name'];
         
-        // Certifique-se de que os times existem
         inserirTimeSeNaoExistir($pdo, $timeAId, $timeAName);
         inserirTimeSeNaoExistir($pdo, $timeBId, $timeBName);
         
@@ -90,8 +124,8 @@ try {
 
         $horario = $matchData['fixture']['date'];
 
-        echo "<br><br><br>$timeAName x $timeBName ";
-        echo "$golsA x $golsB <br><br><br>";
+        //echo "<br><br><br>$timeAName x $timeBName ";
+        //echo "$golsA x $golsB <br><br><br>";
 
         // Inserir a partida na tabela 'partida'
         $sqlPartida = "INSERT INTO partida (id, local, juiz, horario, timeA, timeB, rodada, golsA, golsB)
@@ -118,9 +152,9 @@ try {
         $stmtPartida->bindParam(':golsB', $golsB);
 
         if ($stmtPartida->execute()) {
-            echo "Partida inserida/atualizada com sucesso: $timeAName vs $timeBName<br>";
+            //echo "Partida inserida/atualizada com sucesso: $timeAName vs $timeBName<br>";
         } else {
-            echo "Erro ao inserir/atualizar partida: $timeAName vs $timeBName<br>";
+            //echo "Erro ao inserir/atualizar partida: $timeAName vs $timeBName<br>";
         }
 
         // Processar os gols da partida
@@ -172,9 +206,19 @@ try {
         }
     }
 
-    echo "Dados das partidas e gols inseridos/atualizados com sucesso!";
+    //echo "Dados das partidas e gols inseridos/atualizados com sucesso!";
+
+    $date = date('Y-m-d', strtotime($date . ' -1 day'));
+
+    $sqlAtualizarData = "UPDATE configuracoes SET ultimo_dia_verificado = :data";
+    $stmtAtualizarData = $pdo->prepare($sqlAtualizarData);
+    $stmtAtualizarData->bindParam(':data', $date);
+    $stmtAtualizarData->execute();
 
 } catch (PDOException $e) {
-    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+    //echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
 }
+
+http_response_code(204);
+exit;
 ?>

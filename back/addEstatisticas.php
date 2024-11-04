@@ -1,11 +1,46 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $date="2022-10-10";
 $season=substr($date, 0, 4);
+$lastDate = "";
+
+// Conectar ao banco de dados
+$host = "localhost";
+$db = "soccer-stats-db";
+$user = "root";
+$pass = ""; 
+
+try {
+    // Tenta conectar ao banco de dados
+    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Obtém a chave API da tabela configuracoes
+    $sql = "SELECT apiKey, ultimo_dia_verificado FROM configuracoes LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $config = $stmt->fetch(PDO::FETCH_ASSOC);
+    $apiKey = $config['apiKey'];
+    $lastDate = $config['ultimo_dia_verificado'];
+
+} catch (PDOException $e) {
+    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+    exit;
+}
+
 // Inicializa a requisição cURL para obter os fixtures (partidas) no período especificado
 $curl = curl_init();
 curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://v3.football.api-sports.io/fixtures?league=71&season=$season&date=$date",
+    CURLOPT_URL => "https://v3.football.api-sports.io/fixtures?league=71&season=$season&from=$lastDate&to=$date",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -14,7 +49,7 @@ curl_setopt_array($curl, array(
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => array(
-        'x-rapidapi-key: 339925210cc657b54c360219edf39de5',
+        'x-rapidapi-key: ' . $apiKey,
         'x-rapidapi-host: v3.football.api-sports.io'
     ),
 ));

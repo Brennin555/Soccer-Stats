@@ -32,7 +32,7 @@ if ($conn->connect_error) {
 // Obtenha os parâmetros da URL
 $request = $_GET;
 
-// Lida com a requisição GET para listar os times
+// listar os times
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['times'])) {
     $sql = "SELECT * FROM time";
     $result = $conn->query($sql);
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['times'])) {
     }
 }
 
-// Lida com requisição GET para listar as partidas
+// listar as partidas
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['partidas'])) {
     $sql = "SELECT partida.*, timeA.nome AS timeA_nome, timeB.nome AS timeB_nome 
             FROM partida
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['partidas'])) {
     }
 }
 
-// Lida com requisição GET para partida especifica
+// partida especifica
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['partida'])) {
     $sql = "SELECT partida.*, timeA.nome AS timeA_nome, timeB.nome AS timeB_nome 
             FROM partida
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['partida'])) {
     }
 }
 
-// Lida com requisição GET para listar os jogadores
+// listar os jogadores
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['jogadores'])) {
     $sql = "SELECT * FROM jogador";
     $result = $conn->query($sql);
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['jogadores'])) {
     }
 }
 
-// Lida com requisição GET para listar jogadores de um time específico
+// listar jogadores de um time específico
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['jogadores']) && isset($request['time'])) {
     $sql = "SELECT * FROM jogador WHERE idTime = " . $request['time'];
     $result = $conn->query($sql);
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['jogadores']) && isse
     }
 }
 
-// Lida com requisição GET para jogador específico
+// jogador específico
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['jogador'])) {
     $sql = "SELECT * FROM jogador WHERE id = " . $request['jogador'];
     $result = $conn->query($sql);
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['jogador'])) {
     }
 }
 
-// Lida com requisição GET para listar as partidas
+// listar as partidas
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['estatisticas'])) {
     $sql = "SELECT estatisticas.*, timeA.nome AS timeA_nome, timeB.nome AS timeB_nome 
             FROM estatisticas
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['estatisticas'])) {
     }
 }
 
-// Lida com requisição GET para listar detalhes partida
+// listar detalhes partida
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($request['detalhespartida'])) {
     $sql = "SELECT detalhespartida.* 
             FROM detalhespartida
